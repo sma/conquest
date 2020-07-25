@@ -1,0 +1,4 @@
+name: conquest
+
+environment:
+  sdk: '>=2.8.0 <3.0.0'
