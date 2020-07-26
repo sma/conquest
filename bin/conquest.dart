@@ -971,7 +971,7 @@ bool play_salvo(int starnum, bool battle) {
       planet_num = 0;
     }
   } else {
-    planet_num = 0;
+    planet_num = 1;
     while (pplanet.team != ENEMY) {
       pplanet = pplanet.next!;
     }
@@ -2449,16 +2449,16 @@ Line get_line(bool onech) {
   ind = 1;
   do {
     ch = get_char();
-    if (ch == "") {
+    if (ch == "\b") {
       if (ind != 1) {
         ind = ind - 1;
         if ((ind != 1) && onech) {
-          putchar("");
+          putchar("\b");
           ind = ind - 1;
         }
         if ((ind != 1) && !onech) {
           putchar(" ");
-          putchar("");
+          putchar("\b");
         }
       }
     } else if (ch != "\n") {
