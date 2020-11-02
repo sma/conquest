@@ -233,11 +233,10 @@ void check_game_over() {
   final transports = [0, 0];
   final inhabs = [0, 0];
   bool quit_game;
-  int team;
   int tfnum, starnum;
   Planet? pplan;
   quit_game = game_over;
-  for (team = ENEMY; team <= player; team++) {
+  for (var team = ENEMY; team <= player; team++) {
     transports[team] = 0;
     inhabs[team] = 0;
     for (tfnum = 1; tfnum <= 26; tfnum++) {
@@ -260,7 +259,7 @@ void check_game_over() {
       pplan = pplan.next;
     }
   }
-  for (team = ENEMY; team <= player; team++) {
+  for (var team = ENEMY; team <= player; team++) {
     total[team] = inhabs[team] + transports[team];
     dead[team] = total[team] == 0;
   }
@@ -271,11 +270,11 @@ void check_game_over() {
   game_over = dead[player] || dead[ENEMY] || (turn > 100) || quit_game;
   if (game_over) {
     clear_screen();
-    printf('*** Game over ***\n');
-    printf('Player: Population in transports:%3d', transports[player]);
+    printf("*** Game over ***\n");
+    printf("Player: Population in transports:%3d", transports[player]);
     printf("  IU's on colonies: %3d  TOTAL: %3d\n", inhabs[player], total[player]);
-    putchar('\n');
-    printf('Enemy:  Population in transports:%3d', transports[ENEMY]);
+    putchar("\n");
+    printf("Enemy:  Population in transports:%3d", transports[ENEMY]);
     printf("  IU's on colonies: %3d  TOTAL: %3d\n", inhabs[ENEMY], total[ENEMY]);
     if ((total[ENEMY] > total[player]) || quit_game) {
       printf("**** THE ENEMY HAS CONQUERED THE GALAXY ***\n");
@@ -377,7 +376,7 @@ void EN2MY_attack(int starnum) {
   double odds, best_score;
   Planet? pplanet, best_planet;
   int en_tf;
-  var first = List.filled(8, true);
+  final first = List.filled(8, true);
   en_tf = 1;
   while ((tf[ENEMY][en_tf].dest != starnum) || (tf[ENEMY][en_tf].eta != 0)) {
     en_tf = en_tf + 1;
@@ -461,9 +460,9 @@ void joinsilent(int team, Tf parent, Tf child) {
 }
 
 int lose(int ships, Ref<bool> lose_noneRef, String typ, Ref<double> percent) {
-  bool lose_none = lose_noneRef.value;
+  var lose_none = lose_noneRef.value;
   if (ships > 0) {
-    int sleft = ships;
+    var sleft = ships;
     for (var i = 1; i <= ships; i++) {
       if (rand() > percent.value) {
         lose_none = false;
@@ -577,7 +576,7 @@ void tf_battle(int starnum) {
   int size;
   int team;
   int dstar;
-  List<double> slist = List.filled(nstars + 1, 0.0);
+  final slist = List.filled(nstars + 1, 0.0);
   bool fin, first;
   board[stars[starnum].x][stars[starnum].y].enemy = "!";
   update_board(stars[starnum].x, stars[starnum].y, Sector.left);
@@ -617,14 +616,14 @@ void tf_battle(int starnum) {
     printf("Player losses:                ");
     do {
       point(15, 21);
-      var r1 = Ref(ene_loss);
+      final r1 = Ref(ene_loss);
       tf[ENEMY][ennum].t = lose(tf[ENEMY][ennum].t, r1, "t", enodds);
       tf[ENEMY][ennum].s = lose(tf[ENEMY][ennum].s, r1, "s", enodds);
       tf[ENEMY][ennum].c = lose(tf[ENEMY][ennum].c, r1, "c", enodds);
       tf[ENEMY][ennum].b = lose(tf[ENEMY][ennum].b, r1, "b", enodds);
       ene_loss = r1.value;
       point(15, 22);
-      var r2 = Ref(pla_loss);
+      final r2 = Ref(pla_loss);
       tf[player][plnum].t = lose(tf[player][plnum].t, r2, "t", plodds);
       tf[player][plnum].s = lose(tf[player][plnum].s, r2, "s", plodds);
       tf[player][plnum].c = lose(tf[player][plnum].c, r2, "c", plodds);
@@ -646,7 +645,7 @@ void tf_battle(int starnum) {
       if ((tf[player][plnum].c > 0) || (tf[player][plnum].b > 0)) {
         tf[ENEMY][new_tf].t = tf[ENEMY][ennum].t;
         tf[ENEMY][new_tf].s = tf[ENEMY][ennum].s;
-        var r = Ref(none);
+        final r = Ref(none);
         size = best_plan(starnum, r);
         team = r.value;
         if (((enodds.value < 0.7) && (size < 30)) ||
@@ -734,8 +733,8 @@ void tf_battle(int starnum) {
 }
 
 void update_board(int x, int y, int option) {
-  int screen_x = 3 * x + 1;
-  int screen_y = 16 - y;
+  final screen_x = 3 * x + 1;
+  final screen_y = 16 - y;
   switch (option) {
     case Sector.left:
       point(screen_x, screen_y);
@@ -785,7 +784,7 @@ void withdraw(int starnum, int plnum) {
 
 /// If task force [tf_num] of team [tm] has no ships, remove it.
 void zero_tf(int tm, int tf_num) {
-  Tf taskf = tf[tm][tf_num];
+  final taskf = tf[tm][tf_num];
   if (taskf.dest != 0) {
     if ((taskf.s + taskf.t + taskf.c + taskf.b) == 0) {
       if (taskf.eta == 0) {
@@ -793,10 +792,10 @@ void zero_tf(int tm, int tf_num) {
       }
       taskf.dest = 0;
       if (tm == player) {
-        int x = taskf.x;
-        int y = taskf.y;
+        final x = taskf.x;
+        final y = taskf.y;
         board[x][y].tf = " ";
-        for (int i = 1; i <= 26; i++) {
+        for (var i = 1; i <= 26; i++) {
           if ((tf[player][i].dest != 0) && (tf[player][i].x == x) && (tf[player][i].y == y)) {
             if (board[x][y].tf == " ") {
               board[x][y].tf = chr(i + ord("a") - 1);
@@ -896,13 +895,13 @@ void fire_salvo(int att_team, Tf task, int tfnum, Planet planet, bool first_time
     p_lose_none = true;
     do {
       point(17, 22);
-      var r1 = Ref(a_lose_none);
+      final r1 = Ref(a_lose_none);
       task.c = lose(task.c, r1, "c", Ref(attack_save));
       task.b = lose(task.b, r1, "b", Ref(attack_save));
       a_lose_none = r1.value;
       point(17, 23);
       bases = planet.mb;
-      var r2 = Ref(p_lose_none);
+      final r2 = Ref(p_lose_none);
       planet.mb = lose(planet.mb, r2, "m", Ref(defend_save));
       if (planet.mb != bases) {
         printf("b");
@@ -1069,7 +1068,7 @@ void print_col() {
   Planet? pplanet;
   printf("olonies:");
   point(50, 1);
-  for (int i = 1; i <= nstars; i++) {
+  for (var i = 1; i <= nstars; i++) {
     pplanet = stars[i].first_planet;
     while (pplanet != null) {
       if ((pplanet.team) == player) {
@@ -1418,7 +1417,7 @@ void init_player() {
 /// Initializes the enemy.
 void initmach() {
   int res_amt, maxx, start_star, starnum, count;
-  List<double> slist = List.filled(nstars + 1, 0.0);
+  final slist = List.filled(nstars + 1, 0.0);
 
   range[ENEMY] = initrange + 2;
 
@@ -1581,7 +1580,7 @@ int eval_t_col(Planet planet, double range) {
 /// Removes empty s.
 void inputmach() {
   int count, tfnum, starnum;
-  List<double> slist = List.filled(nstars + 1, 0.0);
+  final slist = List.filled(nstars + 1, 0.0);
   for (tfnum = 1; tfnum <= 26; tfnum++) {
     if ((tf[ENEMY][tfnum].eta == 0) && (tf[ENEMY][tfnum].dest != 0)) {
       starnum = tf[ENEMY][tfnum].dest;
@@ -1748,7 +1747,7 @@ void send_t_tf(Tf task, List<double> slist, int dest_star) {
 /// Sends all scouts of task force [task] to unexplored stars.
 void send_scouts(List<double> slist, Tf task) {
   int dest, new_tf, j, doind;
-  List<int> doable = List.filled(nstars + 1, 0);
+  final doable = List.filled(nstars + 1, 0);
 
   if (task.s > 0) {
     // task force has scouts
@@ -1839,12 +1838,12 @@ void wander_bc(Tf task, List<double> slist) {
 
 void move_ships() {
   double ratio, prob;
-  int there, dx, dy, i;
+  int there, dx, dy;
   int tm;
   Planet? pplanet;
   bool any, loss;
   /*clear the board*/
-  for (i = 1; i <= 26; i++) {
+  for (var i = 1; i <= 26; i++) {
     if ((tf[player][i].dest != 0) && (tf[player][i].eta != 0)) {
       board[tf[player][i].x][tf[player][i].y].tf = " ";
       update_board(tf[player][i].x, tf[player][i].y, Sector.right);
@@ -1853,13 +1852,14 @@ void move_ships() {
   /*move ships of both teams*/
   tm = ENEMY;
   do {
-    for (i = 1; i <= 26; i++) {
-      Tf t = tf[tm][i];
+    for (var i = 1; i <= 26; i++) {
+      final t = tf[tm][i];
       if (t.dest != 0 && t.eta != 0) {
         // tf is moving
         t.eta = t.eta - 1;
+        final arrived = t.eta == 0;
 
-        if (!stars[t.dest].visit[tm] && t.eta == 0 && tm == player) {
+        if (!stars[t.dest].visit[tm] && arrived && tm == player) {
           // player tf is arriving at unexplored star
           left_line[20] = true;
           clear_left();
@@ -1872,8 +1872,8 @@ void move_ships() {
           if (t.b != 0) prob = (b_e_prob + rnd(b_e_var) * t.b) / 100.0;
           prob = min(prob, 100.0);
 
-          var rloss = Ref(true);
-          var rprob = Ref(prob);
+          final rloss = Ref(true);
+          final rprob = Ref(prob);
           t.t = lose(t.t, rloss, "t", rprob);
           t.s = lose(t.s, rloss, "s", rprob);
           t.c = lose(t.c, rloss, "c", rprob);
@@ -1901,7 +1901,7 @@ void move_ships() {
             t.x = t.xf + round(ratio * (dx - t.xf));
             t.y = t.yf + round(ratio * (dy - t.yf));
 
-            if (t.eta == 0) {
+            if (arrived) {
               // player tf has reached destination star
               pplanet = stars[t.dest].first_planet;
               while (pplanet != null) {
@@ -1916,7 +1916,7 @@ void move_ships() {
               }
             }
           }
-          if (tm == ENEMY && t.eta == 0) {
+          if (tm == ENEMY && arrived) {
             // enemy tf has reached destination star
             pplanet = stars[t.dest].first_planet;
             stars[t.dest].visit[tm] = true;
@@ -1946,7 +1946,7 @@ void move_ships() {
     tm++;
   } while (tm != none);
   /* put the good guys on the board*/
-  for (i = 1; i <= 26; i++) {
+  for (var i = 1; i <= 26; i++) {
     if (tf[player][i].dest != 0) {
       tf[player][i].blasting = false;
       dx = tf[player][i].x;
@@ -1960,7 +1960,7 @@ void move_ships() {
     }
   }
   any = false;
-  for (i = 1; i <= nstars; i++) {
+  for (var i = 1; i <= nstars; i++) {
     if (player_arrivals[i]) {
       if (!any) {
         point(33, 21);
@@ -1977,7 +1977,7 @@ void move_ships() {
     printf(blank_line);
   }
   any = false;
-  for (i = 1; i <= nstars; i++) {
+  for (var i = 1; i <= nstars; i++) {
     if (enemy_arrivals[i]) {
       if (!any) {
         point(33, 22);
@@ -1994,7 +1994,7 @@ void move_ships() {
     printf(blank_line);
   }
   any = false;
-  for (i = 1; i <= nstars; i++) {
+  for (var i = 1; i <= nstars; i++) {
     if (en_departures[i]) {
       if (!any) {
         point(33, 23);
@@ -2010,7 +2010,7 @@ void move_ships() {
     point(33, 23);
     printf(blank_line);
   }
-  for (i = 1; i <= nstars; i++) {
+  for (var i = 1; i <= nstars; i++) {
     revolt(i);
   }
 }
@@ -2104,7 +2104,8 @@ void blast_planet() {
         while (!done) {
           if (pplanet!.number == planet_num) {
             done = true;
-          } else if (pplanet.next == null) {
+            // a simple `==` triggers a false positive linter warning
+          } else if (!(pplanet.next != null)) {
             done = true;
           } else {
             pplanet = pplanet.next;
@@ -2334,7 +2335,7 @@ void land() {
 void quit() {
   clear_screen();
   printf("Quit game....[Y/N]\n");
-  String answer = get_char();
+  final answer = get_char();
   if (answer != "Y") {
     printmap();
   } else {
@@ -2425,7 +2426,7 @@ bool set_des(int tf_num) {
 /// Returns the next character the user enters on the keyboard.
 /// Returns the empty string on EOF.
 String get_char() {
-  String result = getchar() ?? "";
+  var result = getchar() ?? "";
   if (result == "\r") {
     result = "\n";
   }
@@ -2443,7 +2444,7 @@ class Line {
 /// Returns a line of input which can be passed to [get_token].
 /// If [onech] is true, each character entered is separated by space.
 Line get_line(bool onech) {
-  Line line = Line();
+  final line = Line();
   String ch;
   int ind;
   ind = 1;
@@ -2510,7 +2511,7 @@ void clear_field() {
 /// Clears the first 30 columns of line 19 to 24.
 /// Only clears the line if indicated dirty by [left_line] list and resets dirty state.
 void clear_left() {
-  for (int i = 19; i <= 24; i++) {
+  for (var i = 19; i <= 24; i++) {
     if (left_line[i]) {
       point(1, i);
       printf(blank_line);
@@ -2571,8 +2572,8 @@ String get_token(Line line) {
 }
 
 class Helpst {
-  String cmd, does;
-  Helpst(this.cmd, this.does);
+  const Helpst(this.cmd, this.does);
+  final String cmd, does;
 }
 
 List<Helpst> help0 = [
@@ -2649,7 +2650,7 @@ List<Helpst> help4 = [
 /// Prints a list of command in the last 30 columns of the screen.
 void help(int which) {
   List<Helpst>? h;
-  int j = 1;
+  var j = 1;
   if (which == 0) {
     h = help0;
   }
@@ -2716,7 +2717,7 @@ void pause() {
 /// Then advances cursor position to the next line in the same column.
 void print_tf(int i) {
   if (i > 0 && i < 27) {
-    Tf t = tf[player][i];
+    final t = tf[player][i];
     if (t.dest != 0) {
       printf("TF%c:", chr(i + ord("a") - 1));
       if (t.eta == 0) {
