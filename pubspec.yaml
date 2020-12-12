@@ -1,4 +1,4 @@
 name: conquest
 
 environment:
-  sdk: ">=2.11.0-234.0 <3.0.0"
+  sdk: ">=2.12.0-0 <3.0.0"
