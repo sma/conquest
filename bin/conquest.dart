@@ -97,13 +97,13 @@ double rand() {
 
 /// Prints a formatted string with zero or more arguments to [stdout].
 /// See [sprintf] for the supported subset of `%` formats.
-void printf(String fmt, [dynamic arg1, dynamic arg2, dynamic arg3]) {
-  printfN(fmt, [arg1, arg2, arg3]);
+void printf(String fmt, [Object? arg1, Object? arg2, Object? arg3]) {
+  printfN(fmt, [arg1, arg2, arg3].whereType<Object>().toList());
 }
 
 /// Prints a formatted string with any number of arguments passed as a list to [stdout].
 /// See [sprintf] for the supported subset of `%` formats.
-void printfN(String fmt, List args) {
+void printfN(String fmt, List<Object> args) {
   stdout.write(sprintf(fmt, args));
 }
 
@@ -115,7 +115,7 @@ void printfN(String fmt, List args) {
 /// - `%s` is a string (actually, anything coercable into a string)
 /// `dfs` may be preceeded by an optional length, like `%2d` or `%-4s`.
 /// `f` may also have an optional precesion value, like `%4.0f`.
-String sprintf(String fmt, List args) {
+String sprintf(String fmt, List<Object> args) {
   var i = 0;
   return fmt.replaceAllMapped(RegExp(r"%(%|c|-?(\d+)?(\.\d+)?[dfs])"), (match) {
     var m = match[1]!;
@@ -317,10 +317,10 @@ bool display_forces(int ennum, int plnum, Ref<double> enoddsRef, Ref<double> plo
   }
   if (battle) {
     enodds = (pl_forces.toDouble()) / (en_forces + tf[ENEMY][ennum].t * t_def + tf[ENEMY][ennum].s * s_def);
-    enodds = min(14.0, enodds);
+    enodds = min(14, enodds);
     enodds = exp((log(0.8)) * enodds);
     plodds = (en_forces.toDouble()) / (pl_forces + tf[player][plnum].t * t_def + tf[player][plnum].s * s_def);
-    plodds = min(14.0, plodds);
+    plodds = min(14, plodds);
     plodds = exp((log(0.8)) * plodds);
     point(1, 19);
     printf("enemy %5d", en_forces);
@@ -568,7 +568,7 @@ void pl2yerattack(int starnum) {
 
 void tf_battle(int starnum) {
   int ennum, plnum;
-  final enodds = Ref(0.0), plodds = Ref(0.0);
+  final enodds = Ref<double>(0), plodds = Ref<double>(0);
   bool battle;
   int count, new_tf, i;
   String ch;
@@ -576,7 +576,7 @@ void tf_battle(int starnum) {
   int size;
   int team;
   int dstar;
-  final slist = List.filled(nstars + 1, 0.0);
+  final slist = List<double>.filled(nstars + 1, 0);
   bool fin, first;
   board[stars[starnum].x][stars[starnum].y].enemy = "!";
   update_board(stars[starnum].x, stars[starnum].y, Sector.left);
@@ -872,9 +872,9 @@ void fire_salvo(int att_team, Tf task, int tfnum, Planet planet, bool first_time
   att_forces = weapons[att_team] * (task.c * c_guns + task.b * b_guns);
   def_forces = weapons[def_team] * (planet.mb * c_guns + planet.amb * b_guns);
   if (def_forces > 0) {
-    att_odds = min(def_forces.toDouble() / att_forces, 14.0);
+    att_odds = min(def_forces.toDouble() / att_forces, 14);
     attack_save = exp(log(0.8) * att_odds);
-    def_odds = min((att_forces.toDouble()) / def_forces, 14.0);
+    def_odds = min((att_forces.toDouble()) / def_forces, 14);
     defend_save = exp(log(0.8) * def_odds);
     point(1, 20);
     if (att_team == player) {
@@ -1417,7 +1417,7 @@ void init_player() {
 /// Initializes the enemy.
 void initmach() {
   int res_amt, maxx, start_star, starnum, count;
-  final slist = List.filled(nstars + 1, 0.0);
+  final slist = List<double>.filled(nstars + 1, 0);
 
   range[ENEMY] = initrange + 2;
 
@@ -1580,7 +1580,7 @@ int eval_t_col(Planet planet, double range) {
 /// Removes empty s.
 void inputmach() {
   int count, tfnum, starnum;
-  final slist = List.filled(nstars + 1, 0.0);
+  final slist = List<double>.filled(nstars + 1, 0);
   for (tfnum = 1; tfnum <= 26; tfnum++) {
     if ((tf[ENEMY][tfnum].eta == 0) && (tf[ENEMY][tfnum].dest != 0)) {
       starnum = tf[ENEMY][tfnum].dest;
@@ -1870,7 +1870,7 @@ void move_ships() {
           if (t.s != 0) prob = (s_e_prob + rnd(s_e_var) * t.s) / 100.0;
           if (t.c != 0) prob = (c_e_prob + rnd(c_e_var) * t.c) / 100.0;
           if (t.b != 0) prob = (b_e_prob + rnd(b_e_var) * t.b) / 100.0;
-          prob = min(prob, 100.0);
+          prob = min(prob, 100);
 
           final rloss = Ref(true);
           final rprob = Ref(prob);

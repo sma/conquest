@@ -2,3 +2,10 @@ name: conquest
 
 environment:
   sdk: ">=2.12.0-0 <3.0.0"
+
+dev_dependencies:
+  extra_pedantic:
+    git:
+      url: https://github.com/icnh/flutter_packages.git
+      path: extra_pedantic
+      ref: null_safety
