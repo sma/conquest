@@ -10,7 +10,7 @@ linter:
     non_constant_identifier_names: false
     prefer_interpolation_to_compose_strings: false
 
-    # eventually these these
+    # eventually remove these
     parameter_assignments: false
 
 analyzer:
