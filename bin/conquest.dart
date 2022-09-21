@@ -2591,17 +2591,17 @@ List<Helpst> help0 = [
 List<Helpst> help1 = [
   Helpst("B", "Blast Planet"),
   Helpst("C", "Colony summary"),
-  Helpst("D", " Destination"),
+  Helpst("D", "TaskForce Destination"),
   Helpst("G", "Go on (done)"),
   Helpst("H", "Help"),
-  Helpst("J", "Join s"),
+  Helpst("J", "Join TaskForces"),
   Helpst("L", "Land transports"),
   Helpst("M", "Redraw Map"),
-  Helpst("N", "New "),
+  Helpst("N", "New TaskForce"),
   Helpst("Q", "Quit"),
   Helpst("R", "Research summary"),
   Helpst("S", "Star summary"),
-  Helpst("T", " summary")
+  Helpst("T", "TaskForce summary")
 ];
 
 List<Helpst> help2 = [
@@ -2612,7 +2612,7 @@ List<Helpst> help2 = [
   Helpst("O", "Odds"),
   Helpst("R", "Research summary"),
   Helpst("S", "Star summary"),
-  Helpst("T", " summary"),
+  Helpst("T", "TaskForce summary"),
   Helpst("W", "Withdraw")
 ];
 
@@ -2626,7 +2626,7 @@ List<Helpst> help3 = [
   Helpst("N", "New TF"),
   Helpst("R", "Research summary"),
   Helpst("S", "Star summary"),
-  Helpst("T", " summary")
+  Helpst("T", "TaskForce summary")
 ];
 
 List<Helpst> help4 = [
