@@ -2,10 +2,7 @@ include: package:lints/recommended.yaml
 
 linter:
   rules:
-    # switch these two
-    prefer_single_quotes: false
-    prefer_double_quotes: true
-
+    prefer_single_quotes: true
     constant_identifier_names: false
     non_constant_identifier_names: false
     prefer_interpolation_to_compose_strings: false
@@ -15,7 +12,5 @@ analyzer:
     strict-casts: true
     strict-inference: true
     strict-raw-types: true
-  strong-mode:
-    implicit-dynamic: false
   errors:
     unused_local_variable: ignore

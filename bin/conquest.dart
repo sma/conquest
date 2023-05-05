@@ -1,6 +1,6 @@
 // ported to Dart by Stefan Matthias Aust from a C source ported to Amiga by Rob Shimbo
-import "dart:io";
-import "dart:math";
+import 'dart:io';
+import 'dart:math';
 
 void setRawMode(bool b) {
   stdin.echoMode = !b;
@@ -19,7 +19,7 @@ class Sector {
   static const left = 1;
   static const both = 2;
 
-  String enemy = " ", star = " ", tf = " ";
+  String enemy = ' ', star = ' ', tf = ' ';
 }
 
 const ENEMY = 0;
@@ -78,7 +78,7 @@ const initvel = 1;
 const initrange = 5;
 const initweap = 3;
 const iu_ratio = 2;
-const blank_line = "                              "; // 30 spaces
+const blank_line = '                              '; // 30 spaces
 const t_e_prob = 10.0;
 const t_e_var = 5;
 const s_e_prob = 70.0;
@@ -117,39 +117,39 @@ void printfN(String fmt, List<Object> args) {
 /// `f` may also have an optional precesion value, like `%4.0f`.
 String sprintf(String fmt, List<Object> args) {
   var i = 0;
-  return fmt.replaceAllMapped(RegExp(r"%(%|c|-?(\d+)?(\.\d+)?[dfs])"), (match) {
+  return fmt.replaceAllMapped(RegExp(r'%(%|c|-?(\d+)?(\.\d+)?[dfs])'), (match) {
     var m = match[1]!;
-    if (m == "%") {
+    if (m == '%') {
       return m;
     }
-    if (m == "c") {
+    if (m == 'c') {
       var arg = args[i++];
       if (arg is int) {
         arg = String.fromCharCode(arg);
       }
       return arg.toString();
     }
-    final negate = m[0] == "-";
+    final negate = m[0] == '-';
     final length = match[2] == null ? 0 : int.parse(match[2]!);
     final precision = match[3] == null ? -1 : int.parse(match[3]!.substring(1));
     m = m[m.length - 1];
     String s;
-    if (m == "d") {
+    if (m == 'd') {
       final arg = args[i++] as num;
       s = arg.toStringAsFixed(0);
-    } else if (m == "f") {
+    } else if (m == 'f') {
       final arg = args[i++] as num;
       s = precision != -1 ? arg.toStringAsFixed(precision) : arg.toString();
-    } else if (m == "s") {
+    } else if (m == 's') {
       s = args[i++].toString();
     } else {
-      throw ArgumentError("valid %-escape");
+      throw ArgumentError('valid %-escape');
     }
     while (s.length < length) {
       if (negate) {
-        s = s + " ";
+        s = s + ' ';
       } else {
-        s = " " + s;
+        s = ' ' + s;
       }
     }
     return s;
@@ -168,7 +168,7 @@ int ord(String c) => c.codeUnitAt(0);
 String chr(int c) => String.fromCharCode(c);
 
 /// Returns true if [c] is a digit.
-bool isdigit(String c) => ord(c) >= ord("0") && ord(c) <= ord("9");
+bool isdigit(String c) => ord(c) >= ord('0') && ord(c) <= ord('9');
 
 List<List<Sector>> board = List.generate(bdsize + 1, (_) => List.generate(bdsize + 1, (_) => Sector()));
 List<List<Tf>> tf = [List.generate(27, (_) => Tf()), List.generate(27, (_) => Tf())];
@@ -187,7 +187,7 @@ List<List<int>> r2nge = List.generate(nstars + 1, (_) => List.filled(nstars + 1,
 int turn = 0;
 int production_year = 0;
 bool game_over = false;
-String en_research = "";
+String en_research = '';
 int x_cursor = 0, y_cursor = 0;
 int bottom_field = 0;
 
@@ -270,18 +270,18 @@ void check_game_over() {
   game_over = dead[player] || dead[ENEMY] || (turn > 100) || quit_game;
   if (game_over) {
     clear_screen();
-    printf("*** Game over ***\n");
-    printf("Player: Population in transports:%3d", transports[player]);
+    printf('*** Game over ***\n');
+    printf('Player: Population in transports:%3d', transports[player]);
     printf("  IU's on colonies: %3d  TOTAL: %3d\n", inhabs[player], total[player]);
-    putchar("\n");
-    printf("Enemy:  Population in transports:%3d", transports[ENEMY]);
+    putchar('\n');
+    printf('Enemy:  Population in transports:%3d', transports[ENEMY]);
     printf("  IU's on colonies: %3d  TOTAL: %3d\n", inhabs[ENEMY], total[ENEMY]);
     if ((total[ENEMY] > total[player]) || quit_game) {
-      printf("**** THE ENEMY HAS CONQUERED THE GALAXY ***\n");
+      printf('**** THE ENEMY HAS CONQUERED THE GALAXY ***\n');
     } else if (total[player] > total[ENEMY]) {
-      printf("*** PLAYER WINS- YOU HAVE SAVED THE GALAXY! ***\n");
+      printf('*** PLAYER WINS- YOU HAVE SAVED THE GALAXY! ***\n');
     } else {
-      printf("*** DRAWN ***\n");
+      printf('*** DRAWN ***\n');
     }
   }
 }
@@ -323,21 +323,21 @@ bool display_forces(int ennum, int plnum, Ref<double> enoddsRef, Ref<double> plo
     plodds = min(14, plodds);
     plodds = exp((log(0.8)) * plodds);
     point(1, 19);
-    printf("enemy %5d", en_forces);
+    printf('enemy %5d', en_forces);
     if (en_forces > 0) {
-      printf("(weap %2d)", weapons[ENEMY]);
+      printf('(weap %2d)', weapons[ENEMY]);
     } else {
-      printf("         ");
+      printf('         ');
     }
-    printf("sur: %4.0f", enodds * 100.0);
+    printf('sur: %4.0f', enodds * 100.0);
     point(1, 20);
-    printf("player %5d", pl_forces);
+    printf('player %5d', pl_forces);
     if (pl_forces > 0) {
-      printf("(weap %2d)", weapons[player]);
+      printf('(weap %2d)', weapons[player]);
     } else {
-      printf("         ");
+      printf('         ');
     }
-    printf("sur: %4.0f", plodds * 100.0);
+    printf('sur: %4.0f', plodds * 100.0);
   } else {
     enodds = 0;
     plodds = 0;
@@ -350,24 +350,24 @@ bool display_forces(int ennum, int plnum, Ref<double> enoddsRef, Ref<double> plo
 /// Displays the ships of the task force [taskf] at the current cursor position.
 void disp_tf(Tf taskf) {
   if (taskf.t != 0) {
-    printf("%2dt", taskf.t);
+    printf('%2dt', taskf.t);
   } else {
-    printf("   ");
+    printf('   ');
   }
   if (taskf.s != 0) {
-    printf("%2ds", taskf.s);
+    printf('%2ds', taskf.s);
   } else {
-    printf("   ");
+    printf('   ');
   }
   if (taskf.c != 0) {
-    printf("%2dc", taskf.c);
+    printf('%2dc', taskf.c);
   } else {
-    printf("   ");
+    printf('   ');
   }
   if (taskf.b != 0) {
-    printf("%2db", taskf.b);
+    printf('%2db', taskf.b);
   } else {
-    printf("   ");
+    printf('   ');
   }
 }
 
@@ -405,7 +405,7 @@ void EN2MY_attack(int starnum) {
     if (best_score < 0 && best_planet != null) {
       clear_left();
       point(1, 19);
-      printf("Enemy attacks: %c%d", chr(starnum + ord("A") - 1), best_planet.number);
+      printf('Enemy attacks: %c%d', chr(starnum + ord('A') - 1), best_planet.number);
       point(50, 1);
       print_star(starnum);
       clear_field();
@@ -470,7 +470,7 @@ int lose(int ships, Ref<bool> lose_noneRef, String typ, Ref<double> percent) {
       }
     }
     if (sleft < ships) {
-      printf(" %2d%c", ships - sleft, typ);
+      printf(' %2d%c', ships - sleft, typ);
       ships = sleft;
     }
   }
@@ -480,19 +480,19 @@ int lose(int ships, Ref<bool> lose_noneRef, String typ, Ref<double> percent) {
 
 void new_research() {
   if (weapons[player] - weapons[ENEMY] > 1) {
-    en_research = "W";
+    en_research = 'W';
   } else {
     switch (rnd(10)) {
       case 1:
       case 2:
       case 3:
-        en_research = "V";
+        en_research = 'V';
         break;
       case 10:
-        en_research = "R";
+        en_research = 'R';
         break;
       default:
-        en_research = "W";
+        en_research = 'W';
         break;
     }
   }
@@ -505,53 +505,53 @@ void pl2yerattack(int starnum) {
   battle = any_bc(player, starnum);
   if (battle) {
     point(33, 20);
-    printf("Attack at star %c", chr(starnum + ord("A") - 1));
+    printf('Attack at star %c', chr(starnum + ord('A') - 1));
     while (battle) {
       point(50, 1);
       print_star(starnum);
       clear_field();
       point(1, 18);
-      printf("P?                            "); // 28 spaces
+      printf('P?                            '); // 28 spaces
       point(3, 18);
       command = get_char();
       switch (command) {
-        case "S":
+        case 'S':
           starsum();
           break;
-        case "M":
+        case 'M':
           printmap();
           break;
-        case "H":
+        case 'H':
           help(3);
           pause();
           break;
-        case "N":
+        case 'N':
           make_tf();
           break;
-        case "J":
+        case 'J':
           join_tf();
           break;
-        case "C":
+        case 'C':
           print_col();
           break;
-        case "R":
+        case 'R':
           ressum();
           break;
-        case "T":
+        case 'T':
           tfsum();
           break;
-        case "G":
-        case " ":
+        case 'G':
+        case ' ':
           battle = play_salvo(starnum, battle);
           break;
-        case "B":
-          printf("reak off attack");
+        case 'B':
+          printf('reak off attack');
           battle = false;
           break;
         default:
           clear_left();
           error_message();
-          printf(" !Illegal command");
+          printf(' !Illegal command');
           break;
       }
     }
@@ -561,7 +561,7 @@ void pl2yerattack(int starnum) {
       pplanet = pplanet.next;
     }
     point(1, 24);
-    printf("Planet attack concluded       ");
+    printf('Planet attack concluded       ');
     revolt(starnum);
   }
 }
@@ -578,7 +578,7 @@ void tf_battle(int starnum) {
   int dstar;
   final slist = List<double>.filled(nstars + 1, 0);
   bool fin, first;
-  board[stars[starnum].x][stars[starnum].y].enemy = "!";
+  board[stars[starnum].x][stars[starnum].y].enemy = '!';
   update_board(stars[starnum].x, stars[starnum].y, Sector.left);
   ennum = 1;
   while ((tf[ENEMY][ennum].dest != starnum) || (tf[ENEMY][ennum].eta != 0)) {
@@ -611,32 +611,32 @@ void tf_battle(int starnum) {
     pla_loss = true;
     ene_loss = true;
     point(1, 21);
-    printf(" Enemy losses:                ");
+    printf(' Enemy losses:                ');
     point(1, 22);
-    printf("Player losses:                ");
+    printf('Player losses:                ');
     do {
       point(15, 21);
       final r1 = Ref(ene_loss);
-      tf[ENEMY][ennum].t = lose(tf[ENEMY][ennum].t, r1, "t", enodds);
-      tf[ENEMY][ennum].s = lose(tf[ENEMY][ennum].s, r1, "s", enodds);
-      tf[ENEMY][ennum].c = lose(tf[ENEMY][ennum].c, r1, "c", enodds);
-      tf[ENEMY][ennum].b = lose(tf[ENEMY][ennum].b, r1, "b", enodds);
+      tf[ENEMY][ennum].t = lose(tf[ENEMY][ennum].t, r1, 't', enodds);
+      tf[ENEMY][ennum].s = lose(tf[ENEMY][ennum].s, r1, 's', enodds);
+      tf[ENEMY][ennum].c = lose(tf[ENEMY][ennum].c, r1, 'c', enodds);
+      tf[ENEMY][ennum].b = lose(tf[ENEMY][ennum].b, r1, 'b', enodds);
       ene_loss = r1.value;
       point(15, 22);
       final r2 = Ref(pla_loss);
-      tf[player][plnum].t = lose(tf[player][plnum].t, r2, "t", plodds);
-      tf[player][plnum].s = lose(tf[player][plnum].s, r2, "s", plodds);
-      tf[player][plnum].c = lose(tf[player][plnum].c, r2, "c", plodds);
-      tf[player][plnum].b = lose(tf[player][plnum].b, r2, "b", plodds);
+      tf[player][plnum].t = lose(tf[player][plnum].t, r2, 't', plodds);
+      tf[player][plnum].s = lose(tf[player][plnum].s, r2, 's', plodds);
+      tf[player][plnum].c = lose(tf[player][plnum].c, r2, 'c', plodds);
+      tf[player][plnum].b = lose(tf[player][plnum].b, r2, 'b', plodds);
       pla_loss = r2.value;
     } while (!first && ene_loss && pla_loss);
     if (ene_loss) {
       point(15, 21);
-      printf("(none)");
+      printf('(none)');
     }
     if (pla_loss) {
       point(15, 22);
-      printf("(none)");
+      printf('(none)');
     }
     first = false;
     battle = display_forces(ennum, plnum, enodds, plodds);
@@ -671,50 +671,50 @@ void tf_battle(int starnum) {
       fin = false;
       do {
         point(1, 18);
-        printf("B?                            "); // 28 spaces
+        printf('B?                            '); // 28 spaces
         point(3, 18);
         ch = get_char();
         switch (ch) {
-          case "M":
+          case 'M':
             printmap();
             break;
-          case "H":
+          case 'H':
             help(2);
             break;
-          case "S":
+          case 'S':
             starsum();
             break;
-          case "T":
+          case 'T':
             tfsum();
             break;
-          case "C":
+          case 'C':
             print_col();
             break;
-          case "?":
+          case '?':
             break;
-          case "R":
+          case 'R':
             ressum();
             break;
-          case "O":
+          case 'O':
             battle = display_forces(ennum, plnum, enodds, plodds);
             break;
-          case "W":
+          case 'W':
             withdraw(starnum, plnum);
             battle = display_forces(ennum, plnum, enodds, plodds);
             break;
-          case " ":
-          case "G":
+          case ' ':
+          case 'G':
             fin = true;
             break;
           default:
-            printf("!illegal command");
+            printf('!illegal command');
         }
       } while (!fin && battle);
       zero_tf(ENEMY, new_tf);
       zero_tf(player, plnum);
       if (tf[ENEMY][new_tf].dest != 0) {
         point(1, 23);
-        printf("en withdraws");
+        printf('en withdraws');
         point(14, 23);
         disp_tf(tf[ENEMY][new_tf]);
         tf[ENEMY][ennum].t = tf[ENEMY][ennum].t - tf[ENEMY][new_tf].t;
@@ -746,7 +746,7 @@ void update_board(int x, int y, int option) {
       break;
     case Sector.both:
       point(screen_x, screen_y);
-      printf("%c%c%c", board[x][y].enemy, board[x][y].star, board[x][y].tf);
+      printf('%c%c%c', board[x][y].enemy, board[x][y].star, board[x][y].tf);
       break;
   }
 }
@@ -755,17 +755,17 @@ void update_board(int x, int y, int option) {
 void up_year() {
   point(39, 18);
   turn = turn + 1;
-  printf("Year ");
-  printf("%3d", turn);
+  printf('Year ');
+  printf('%3d', turn);
   point(48, 19);
   production_year = production_year + 1;
-  printf("%d", production_year);
+  printf('%d', production_year);
 }
 
 void withdraw(int starnum, int plnum) {
   int withnum;
   bool error;
-  printf("ithdraw ");
+  printf('ithdraw ');
   clear_left();
   point(1, 19);
   withnum = split_tf(plnum);
@@ -794,13 +794,13 @@ void zero_tf(int tm, int tf_num) {
       if (tm == player) {
         final x = taskf.x;
         final y = taskf.y;
-        board[x][y].tf = " ";
+        board[x][y].tf = ' ';
         for (var i = 1; i <= 26; i++) {
           if ((tf[player][i].dest != 0) && (tf[player][i].x == x) && (tf[player][i].y == y)) {
-            if (board[x][y].tf == " ") {
-              board[x][y].tf = chr(i + ord("a") - 1);
+            if (board[x][y].tf == ' ') {
+              board[x][y].tf = chr(i + ord('a') - 1);
             } else {
-              board[x][y].tf = "*";
+              board[x][y].tf = '*';
             }
           }
         }
@@ -820,7 +820,7 @@ void battle() {
         (any_bc(ENEMY, starnum) || any_bc(player, starnum))) {
       if (first) {
         point(33, 20);
-        printf("* Tf battle *   ");
+        printf('* Tf battle *   ');
         first = false;
       }
       tf_battle(starnum);
@@ -878,53 +878,53 @@ void fire_salvo(int att_team, Tf task, int tfnum, Planet planet, bool first_time
     defend_save = exp(log(0.8) * def_odds);
     point(1, 20);
     if (att_team == player) {
-      printf("TF%c", chr(tfnum + ord("a") - 1));
+      printf('TF%c', chr(tfnum + ord('a') - 1));
     } else {
-      printf(" EN");
+      printf(' EN');
     }
-    printf(": %4d(weap %2d)sur: %4.0f", att_forces, weapons[att_team], attack_save * 100);
+    printf(': %4d(weap %2d)sur: %4.0f', att_forces, weapons[att_team], attack_save * 100);
     point(1, 21);
-    printfN(" %c%d:%4d (weap %2d)sur: %4.0f",
-        [chr(planet.pstar + ord("A") - 1), planet.number, def_forces, weapons[def_team], defend_save * 100]);
+    printfN(' %c%d:%4d (weap %2d)sur: %4.0f',
+        [chr(planet.pstar + ord('A') - 1), planet.number, def_forces, weapons[def_team], defend_save * 100]);
     point(1, 22);
-    printf("Attacker losses:              ");
+    printf('Attacker losses:              ');
     point(1, 23);
     left_line[23] = true;
-    printf(" Planet losses :              ");
+    printf(' Planet losses :              ');
     a_lose_none = true;
     p_lose_none = true;
     do {
       point(17, 22);
       final r1 = Ref(a_lose_none);
-      task.c = lose(task.c, r1, "c", Ref(attack_save));
-      task.b = lose(task.b, r1, "b", Ref(attack_save));
+      task.c = lose(task.c, r1, 'c', Ref(attack_save));
+      task.b = lose(task.b, r1, 'b', Ref(attack_save));
       a_lose_none = r1.value;
       point(17, 23);
       bases = planet.mb;
       final r2 = Ref(p_lose_none);
-      planet.mb = lose(planet.mb, r2, "m", Ref(defend_save));
+      planet.mb = lose(planet.mb, r2, 'm', Ref(defend_save));
       if (planet.mb != bases) {
-        printf("b");
+        printf('b');
       }
       bases = planet.amb;
-      planet.amb = lose(planet.amb, r2, "a", Ref(defend_save));
+      planet.amb = lose(planet.amb, r2, 'a', Ref(defend_save));
       if (planet.amb != bases) {
-        printf("mb");
+        printf('mb');
       }
       p_lose_none = r2.value;
     } while (!first_time && p_lose_none && a_lose_none);
     if (a_lose_none) {
       point(17, 22);
-      printf("(none)");
+      printf('(none)');
     }
     if (p_lose_none) {
       point(17, 23);
-      printf("(none)");
+      printf('(none)');
     }
   }
   if ((planet.mb + planet.amb == 0) && (any_bc(att_team, planet.pstar))) {
     point(1, 24);
-    printf("Planet %d falls!               ", planet.number);
+    printf('Planet %d falls!               ', planet.number);
     planet.team = att_team;
     planet.esee_team = att_team;
     planet.conquered = true;
@@ -943,13 +943,13 @@ bool play_salvo(int starnum, bool battle) {
   bool found;
   Planet pplanet;
   bool first_time;
-  printf("Attack planet ");
+  printf('Attack planet ');
   pplanet = stars[starnum].first_planet!;
   if (col_stars[starnum][ENEMY] > 1) {
-    printf(":");
+    printf(':');
     planch = get_char();
     clear_left();
-    planet_num = ord(planch) - ord("0");
+    planet_num = ord(planch) - ord('0');
     found = false;
     while (!found) {
       if (pplanet.number == planet_num) {
@@ -963,10 +963,10 @@ bool play_salvo(int starnum, bool battle) {
     if (pplanet.number != planet_num) {
       planet_num = 0;
       error_message();
-      printf("! That is not a useable planet");
+      printf('! That is not a useable planet');
     } else if (pplanet.team != ENEMY) {
       error_message();
-      printf(" !Not an enemy colony");
+      printf(' !Not an enemy colony');
       planet_num = 0;
     }
   } else {
@@ -974,35 +974,35 @@ bool play_salvo(int starnum, bool battle) {
     while (pplanet.team != ENEMY) {
       pplanet = pplanet.next!;
     }
-    printf("%d", pplanet.number);
+    printf('%d', pplanet.number);
     clear_left();
   }
   if (planet_num != 0) {
     point(1, 19);
-    printf(" attacking tf ");
+    printf(' attacking tf ');
     if (tf_stars[starnum][player] > 1) {
-      printf(":");
+      printf(':');
       tf_char = get_char();
-      tf_num = ord(tf_char) - ord("A") + 1;
+      tf_num = ord(tf_char) - ord('A') + 1;
     } else {
       tf_num = 1;
       while (tf[player][tf_num].dest != starnum || tf[player][tf_num].eta != 0) {
         tf_num++;
       }
-      putchar(chr(tf_num + ord("a") - 1));
+      putchar(chr(tf_num + ord('a') - 1));
     }
     if (tf_num < 1 || tf_num > 26) {
       error_message();
-      printf(" !Illegal tf");
+      printf(' !Illegal tf');
     } else if (tf[player][tf_num].dest == 0) {
       error_message();
-      printf(" !Nonexistent tf");
+      printf(' !Nonexistent tf');
     } else if ((tf[player][tf_num].dest != starnum) || (tf[player][tf_num].eta != 0)) {
       error_message();
-      printf(" !Tf is not at this star");
+      printf(' !Tf is not at this star');
     } else if ((tf[player][tf_num].b + tf[player][tf_num].c) == 0) {
       error_message();
-      printf(" !Tf has no warships");
+      printf(' !Tf has no warships');
     } else {
       first_time = !pplanet.under_attack;
       if (!pplanet.under_attack) {
@@ -1020,43 +1020,43 @@ bool play_salvo(int starnum, bool battle) {
 }
 
 void print_planet(Planet pplanet, bool see) {
-  printf("%d:%2d                         ", pplanet.number, pplanet.psee_capacity);
+  printf('%d:%2d                         ', pplanet.number, pplanet.psee_capacity);
   point(x_cursor + 5, y_cursor);
   x_cursor = x_cursor - 5;
   if (pplanet.psee_capacity == 0) {
-    printf(" Decimated");
+    printf(' Decimated');
   } else if ((pplanet.team == none) && see) {
-    printf(" No colony");
+    printf(' No colony');
   } else if (pplanet.team == player) {
-    printf("(%2d,/%3d)", pplanet.inhabitants, pplanet.iu);
+    printf('(%2d,/%3d)', pplanet.inhabitants, pplanet.iu);
     if (pplanet.conquered) {
-      printf("Con");
+      printf('Con');
     } else {
-      printf("   ");
+      printf('   ');
     }
     if (pplanet.mb != 0) {
-      printf("%2dmb", pplanet.mb);
+      printf('%2dmb', pplanet.mb);
     } else {
-      printf("    ");
+      printf('    ');
     }
     if (pplanet.amb != 0) {
-      printf("%2damb", pplanet.amb);
+      printf('%2damb', pplanet.amb);
     }
   } else if ((pplanet.team == ENEMY) && see) {
-    printf("*EN*");
+    printf('*EN*');
     if (pplanet.conquered) {
-      printf("Con");
+      printf('Con');
     } else {
-      printf("   ");
+      printf('   ');
     }
     if (pplanet.under_attack) {
       if (pplanet.mb != 0) {
-        printf("%2dmb", pplanet.mb);
+        printf('%2dmb', pplanet.mb);
       } else {
-        printf("    ");
+        printf('    ');
       }
       if (pplanet.amb != 0) {
-        printf("%2damb", pplanet.amb);
+        printf('%2damb', pplanet.amb);
       }
     }
   }
@@ -1066,13 +1066,13 @@ void print_planet(Planet pplanet, bool see) {
 void print_col() {
   bool see;
   Planet? pplanet;
-  printf("olonies:");
+  printf('olonies:');
   point(50, 1);
   for (var i = 1; i <= nstars; i++) {
     pplanet = stars[i].first_planet;
     while (pplanet != null) {
       if ((pplanet.team) == player) {
-        putchar(chr(i + ord("A") - 1));
+        putchar(chr(i + ord('A') - 1));
         see = true;
         if (((y_cursor > 21) && (x_cursor >= 50)) || (y_cursor > 24)) {
           pause();
@@ -1092,23 +1092,23 @@ void starsum() {
   Line iline;
   int i;
   String strs;
-  printf("tar summary:");
+  printf('tar summary:');
   clear_left();
   point(1, 19);
-  putchar(":");
+  putchar(':');
   iline = get_line(true);
   strs = get_token(iline);
   point(50, 1);
-  if (strs == " ") {
+  if (strs == ' ') {
     for (i = 1; i <= nstars; i++) {
       print_star(i);
     }
   } else {
     do {
-      i = ord(strs) - ord("A") + 1;
+      i = ord(strs) - ord('A') + 1;
       print_star(i);
       strs = get_token(iline);
-    } while (strs != " ");
+    } while (strs != ' ');
   }
   clear_field();
 }
@@ -1117,20 +1117,20 @@ void tfsum() {
   int i;
   String tfs;
   Line iline;
-  printf("f summary :");
+  printf('f summary :');
   iline = get_line(true);
   tfs = get_token(iline);
   point(50, 1);
-  if (tfs == " ") {
+  if (tfs == ' ') {
     for (i = 1; i <= 26; i++) {
       print_tf(i);
     }
   } else {
     do {
-      i = ord(tfs) - ord("A") + 1;
+      i = ord(tfs) - ord('A') + 1;
       print_tf(i);
       tfs = get_token(iline);
-    } while (tfs != " ");
+    } while (tfs != ' ');
   }
   clear_field();
   clear_left();
@@ -1214,17 +1214,17 @@ void initconst() {
   int i3, i1, i2, x, y, temp;
   int team;
 
-  printf("\n* Welcome to CONQUEST! *\n\n");
-  printf("Dart version 1.0\n");
-  printf("Hit return to continue\n");
+  printf('\n* Welcome to CONQUEST! *\n\n');
+  printf('Dart version 1.0\n');
+  printf('Hit return to continue\n');
   get_char();
 
   // setup the board
   for (i1 = 1; i1 <= bdsize; i1++) {
     for (i2 = 1; i2 <= bdsize; i2++) {
-      board[i1][i2].enemy = " ";
-      board[i1][i2].tf = " ";
-      board[i1][i2].star = ".";
+      board[i1][i2].enemy = ' ';
+      board[i1][i2].tf = ' ';
+      board[i1][i2].star = '.';
     }
   }
 
@@ -1242,7 +1242,7 @@ void initconst() {
     do {
       x = rnd(bdsize);
       y = rnd(bdsize);
-    } while (board[x][y].star != ".");
+    } while (board[x][y].star != '.');
     stars[i1].x = x;
     stars[i1].y = y;
 
@@ -1262,8 +1262,8 @@ void initconst() {
       }
     }
 
-    board[x][y].star = chr(ord("A") + i1 - 1);
-    board[x][y].enemy = "?";
+    board[x][y].star = chr(ord('A') + i1 - 1);
+    board[x][y].enemy = '?';
 
     assign_planets(stars[i1], i1);
   }
@@ -1302,7 +1302,7 @@ void initconst() {
 
   printmap();
   point(33, 20);
-  printf("*Initialization*");
+  printf('*Initialization*');
   init_player();
 }
 
@@ -1313,90 +1313,90 @@ void init_player() {
   Line iline;
   do {
     point(1, 18);
-    printf("start at star?\n     ");
+    printf('start at star?\n     ');
     str = get_char();
     point(1, 19);
-    star_number = ord(str) - ord("A") + 1;
+    star_number = ord(str) - ord('A') + 1;
   } while (star_number < 1 || star_number > nstars);
   tf[player][1].x = stars[star_number].x;
   tf[player][1].y = stars[star_number].y;
   tf_stars[star_number][player] = 1;
   tf[player][1].dest = star_number;
   point(1, 20);
-  printf("choose your initial fleet.");
+  printf('choose your initial fleet.');
   point(1, 21);
-  printf("you have %d transports", initunit);
+  printf('you have %d transports', initunit);
   point(1, 22);
-  printf(" && %d units to spend", initmoney);
+  printf(' && %d units to spend', initmoney);
   point(1, 23);
-  printf("on ships or research.");
+  printf('on ships or research.');
   balance = initmoney;
   do {
     point(1, 19);
     print_tf(1);
     point(1, 18);
-    printf("%3d?                          ", balance);
+    printf('%3d?                          ', balance);
     point(6, 18);
     iline = get_line(false);
     do {
       key = get_token(iline);
       amt = iline.amount;
       switch (key) {
-        case "C":
+        case 'C':
           cost = amt * c_cost;
           if (cost <= balance) {
             tf[player][1].c = tf[player][1].c + amt;
           }
           break;
-        case "S":
+        case 'S':
           cost = amt * s_cost;
           if (cost <= balance) {
             tf[player][1].s = tf[player][1].s + amt;
           }
           break;
-        case "B":
+        case 'B':
           cost = amt * b_cost;
           if (cost <= balance) {
             tf[player][1].b = tf[player][1].b + amt;
           }
           break;
-        case "H":
+        case 'H':
           help(0);
           cost = 0;
           break;
-        case "W":
-        case "V":
-        case "R":
+        case 'W':
+        case 'V':
+        case 'R':
           cost = amt;
           if (cost <= balance) {
             research(player, key, amt);
           }
           break;
-        case " ":
+        case ' ':
           cost = 0;
           break;
-        case ">":
+        case '>':
           point(1, 18);
-          printf(">?      ");
+          printf('>?      ');
           point(3, 18);
           cost = 0;
           key = get_char();
           switch (key) {
-            case "M":
+            case 'M':
               printmap();
               break;
-            case "R":
+            case 'R':
               ressum();
               break;
             default:
               error_message();
-              printf(" !Only M,R during initialize");
+              printf(' !Only M,R during initialize');
           }
           break;
         default:
           cost = 0;
           error_message();
-          printf(" !Illegal field %c", key);
+          printf(' !Illegal field %c', key);
       }
       if (cost <= balance) {
         balance = balance - cost;
@@ -1405,11 +1405,11 @@ void init_player() {
         error_message();
         printf("  !can't afford %c", key);
       }
-    } while (key != " ");
+    } while (key != ' ');
   } while (balance > 0);
   stars[star_number].visit[player] = true;
-  board[stars[star_number].x][stars[star_number].y].tf = "a";
-  board[stars[star_number].x][stars[star_number].y].enemy = " ";
+  board[stars[star_number].x][stars[star_number].y].tf = 'a';
+  board[stars[star_number].x][stars[star_number].y].enemy = ' ';
   on_board(stars[star_number].x, stars[star_number].y);
   point(33, 20);
 }
@@ -1438,7 +1438,7 @@ void initmach() {
   tf[ENEMY][1].s = 2;
 
   res_amt = 2;
-  en_research = "V";
+  en_research = 'V';
   research(ENEMY, en_research, res_amt);
 
   // find a star which has the most (give or take 5) stars in reach
@@ -1474,7 +1474,7 @@ void initmach() {
 /// Remembers position in [x_cursor] and [y_cursor].
 /// Marks [left_line] for lines 1 to 17 and 19.
 void point(int col, int row) {
-  printf("\x1B[%d;%dH", row, col);
+  printf('\x1B[%d;%dH', row, col);
   x_cursor = col;
   y_cursor = row;
   if (x_cursor < 20 && y_cursor != 18) {
@@ -1845,7 +1845,7 @@ void move_ships() {
   /*clear the board*/
   for (var i = 1; i <= 26; i++) {
     if ((tf[player][i].dest != 0) && (tf[player][i].eta != 0)) {
-      board[tf[player][i].x][tf[player][i].y].tf = " ";
+      board[tf[player][i].x][tf[player][i].y].tf = ' ';
       update_board(tf[player][i].x, tf[player][i].y, Sector.right);
     }
   }
@@ -1864,7 +1864,7 @@ void move_ships() {
           left_line[20] = true;
           clear_left();
           point(1, 19);
-          printf("Task force %c exploring %c.\n", chr(i + ord("a") - 1), chr(t.dest + ord("@")));
+          printf('Task force %c exploring %c.\n', chr(i + ord('a') - 1), chr(t.dest + ord('@')));
 
           prob = (t_e_prob + rnd(t_e_var) * t.t) / 100.0;
           if (t.s != 0) prob = (s_e_prob + rnd(s_e_var) * t.s) / 100.0;
@@ -1874,16 +1874,16 @@ void move_ships() {
 
           final rloss = Ref(true);
           final rprob = Ref(prob);
-          t.t = lose(t.t, rloss, "t", rprob);
-          t.s = lose(t.s, rloss, "s", rprob);
-          t.c = lose(t.c, rloss, "c", rprob);
-          t.b = lose(t.b, rloss, "b", rprob);
+          t.t = lose(t.t, rloss, 't', rprob);
+          t.s = lose(t.s, rloss, 's', rprob);
+          t.c = lose(t.c, rloss, 'c', rprob);
+          t.b = lose(t.b, rloss, 'b', rprob);
           loss = rloss.value;
 
           if (loss) {
-            printf("No ships");
+            printf('No ships');
           }
-          printf(" destroyed.");
+          printf(' destroyed.');
           left_line[23] = true;
           pause();
 
@@ -1910,7 +1910,7 @@ void move_ships() {
               }
               player_arrivals[t.dest] = true;
               if (!stars[t.dest].visit[tm]) {
-                board[t.x][t.y].enemy = " ";
+                board[t.x][t.y].enemy = ' ';
                 update_board(t.x, t.y, Sector.left);
                 stars[t.dest].visit[tm] = true;
               }
@@ -1951,10 +1951,10 @@ void move_ships() {
       tf[player][i].blasting = false;
       dx = tf[player][i].x;
       dy = tf[player][i].y;
-      if (board[dx][dy].tf == " ") {
-        board[dx][dy].tf = chr(i + ord("a") - 1);
-      } else if (board[dx][dy].tf != chr(i + ord("a") - 1)) {
-        board[dx][dy].tf = "*";
+      if (board[dx][dy].tf == ' ') {
+        board[dx][dy].tf = chr(i + ord('a') - 1);
+      } else if (board[dx][dy].tf != chr(i + ord('a') - 1)) {
+        board[dx][dy].tf = '*';
       }
       update_board(dx, dy, Sector.right);
     }
@@ -1964,11 +1964,11 @@ void move_ships() {
     if (player_arrivals[i]) {
       if (!any) {
         point(33, 21);
-        printf("Player arrivals :   ");
+        printf('Player arrivals :   ');
         point(50, 21);
         any = true;
       }
-      putchar(chr(i + ord("A") - 1));
+      putchar(chr(i + ord('A') - 1));
       player_arrivals[i] = false;
     }
   }
@@ -1981,11 +1981,11 @@ void move_ships() {
     if (enemy_arrivals[i]) {
       if (!any) {
         point(33, 22);
-        printf("Enemy arrivals  :   ");
+        printf('Enemy arrivals  :   ');
         point(50, 22);
         any = true;
       }
-      putchar(chr(i + ord("A") - 1));
+      putchar(chr(i + ord('A') - 1));
       enemy_arrivals[i] = false;
     }
   }
@@ -1998,11 +1998,11 @@ void move_ships() {
     if (en_departures[i]) {
       if (!any) {
         point(33, 23);
-        printf("Enemy departures:   ");
+        printf('Enemy departures:   ');
         point(50, 23);
         any = true;
       }
-      putchar(chr(i + ord("A") - 1));
+      putchar(chr(i + ord('A') - 1));
       en_departures[i] = false;
     }
   }
@@ -2021,33 +2021,33 @@ void printmap() {
   clear_screen();
   for (i1 = bdsize; i1 >= 1; i1--) {
     if ((i1 == 1) || (((i1 / 5) * 5) == i1)) {
-      printf("%2d|", i1);
+      printf('%2d|', i1);
     } else {
-      printf("  |");
+      printf('  |');
     }
     for (i2 = 1; i2 <= bdsize; i2++) {
-      printf("%c%c%c", board[i2][i1].enemy, board[i2][i1].star, board[i2][i1].tf);
+      printf('%c%c%c', board[i2][i1].enemy, board[i2][i1].star, board[i2][i1].tf);
     }
-    printf("|\n");
+    printf('|\n');
   }
-  printf("   ");
+  printf('   ');
   for (i1 = 1; i1 <= bdsize; i1++) {
-    printf("---");
+    printf('---');
   }
-  putchar("\n");
-  printf("   ");
+  putchar('\n');
+  printf('   ');
   for (i1 = 1; i1 <= bdsize; i1++) {
     if ((i1 == 1) || (((i1 / 5) * 5) == i1)) {
-      printf("%2d ", i1);
+      printf('%2d ', i1);
     } else {
-      printf("   ");
+      printf('   ');
     }
   }
-  putchar("\n");
+  putchar('\n');
   point(33, 18);
-  printf("Turn: %3d", turn);
+  printf('Turn: %3d', turn);
   point(33, 19);
-  printf("Production yr: %d", production_year);
+  printf('Production yr: %d', production_year);
   bottom_field = 0;
   for (i1 = 19; i1 <= 24; i1++) {
     left_line[i1] = false;
@@ -2064,42 +2064,42 @@ void blast_planet() {
   int amount;
   String dum;
 
-  printf("last");
+  printf('last');
   clear_left();
   point(1, 19);
-  printf("Firing TF:");
+  printf('Firing TF:');
   tf_char = get_char();
-  tf_num = ord(tf_char) - ord("A") + 1;
+  tf_num = ord(tf_char) - ord('A') + 1;
   if (tf_num < 1 || tf_num > 26) {
     error_message();
-    printf(" !Illegal tf");
+    printf(' !Illegal tf');
   } else if (tf[player][tf_num].dest == 0) {
     error_message();
-    printf(" !Nonexistent tf");
+    printf(' !Nonexistent tf');
   } else if (tf[player][tf_num].eta != 0) {
     error_message();
-    printf(" !Tf is not in normal space  ");
+    printf(' !Tf is not in normal space  ');
   } else if (tf[player][tf_num].blasting) {
     error_message();
-    printf(" !Tf is already blasting     ");
+    printf(' !Tf is already blasting     ');
   } else if ((tf[player][tf_num].b == 0) && (tf[player][tf_num].c == 0)) {
     error_message();
-    printf(" !Tf has no warships         ");
+    printf(' !Tf has no warships         ');
   } else {
     starnum = tf[player][tf_num].dest;
     pplanet = stars[starnum].first_planet;
     if (pplanet == null) {
       error_message();
-      printf(" !No planets at star %c       ", chr(starnum + ord("A") - 1));
+      printf(' !No planets at star %c       ', chr(starnum + ord('A') - 1));
     } else {
       point(1, 20);
-      printf("Target colony ");
+      printf('Target colony ');
       if (pplanet.next == null) {
-        printf("%2d", pplanet.number);
+        printf('%2d', pplanet.number);
       } else {
-        printf(":");
+        printf(':');
         pl_char = get_char();
-        planet_num = ord(pl_char) - ord("0");
+        planet_num = ord(pl_char) - ord('0');
         done = false;
         while (!done) {
           if (pplanet!.number == planet_num) {
@@ -2113,21 +2113,21 @@ void blast_planet() {
         }
         if (pplanet!.number != planet_num) {
           error_message();
-          printf(" !No such planet at this star ");
+          printf(' !No such planet at this star ');
           pplanet = null;
         }
       }
       if (pplanet != null) {
         if (pplanet.team == ENEMY) {
           error_message();
-          printf(" !Conquer it first!");
+          printf(' !Conquer it first!');
         } else if ((pplanet.team == player) && (!pplanet.conquered)) {
           error_message();
-          printf(" !That is a human colony!!    ");
+          printf(' !That is a human colony!!    ');
         } else {
           factors = weapons[player] * ((tf[player][tf_num].c * c_guns) + (tf[player][tf_num].b * b_guns));
           point(1, 21);
-          printf("Units (max %3d) :", factors / 4);
+          printf('Units (max %3d) :', factors / 4);
           point(18, 21);
           iline = get_line(false);
           dum = get_token(iline);
@@ -2139,11 +2139,11 @@ void blast_planet() {
           }
           tf[player][tf_num].blasting = true;
           point(1, 22);
-          printf("Blasting %3d units", factors / 4);
+          printf('Blasting %3d units', factors / 4);
           blast(pplanet, factors);
           point(1, 23);
           left_line[23] = true;
-          putchar(chr(pplanet.pstar + ord("A") - 1));
+          putchar(chr(pplanet.pstar + ord('A') - 1));
           pplanet.psee_capacity = pplanet.capacity;
           see = true;
           if ((y_cursor > 21 && x_cursor >= 50) || y_cursor > 24) {
@@ -2163,59 +2163,59 @@ void inputplayer() {
   String key;
   bool fin;
   point(33, 20);
-  printf("* Movement *    ");
+  printf('* Movement *    ');
   fin = false;
   do {
     point(1, 18);
-    printf("?                             ");
+    printf('?                             ');
     point(2, 18);
     key = get_char();
     switch (key) {
-      case "M":
+      case 'M':
         printmap();
         break;
-      case "B":
+      case 'B':
         blast_planet();
         break;
-      case "G":
-      case " ":
+      case 'G':
+      case ' ':
         fin = true; // end of turn
         break;
-      case "H":
-      case "?":
+      case 'H':
+      case '?':
         help(1);
         break;
-      case "L":
+      case 'L':
         land();
         break;
-      case "D":
+      case 'D':
         send_tf();
         break;
-      case "S":
+      case 'S':
         starsum();
         break;
-      case "N":
+      case 'N':
         make_tf();
         break;
-      case "J":
+      case 'J':
         join_tf();
         break;
-      case "C":
+      case 'C':
         print_col();
         break;
-      case "R":
+      case 'R':
         ressum();
         break;
-      case "Q":
+      case 'Q':
         fin = true;
         quit();
         break;
-      case "T":
+      case 'T':
         tfsum();
         break;
       default:
         error_message();
-        printf("  !illegal command");
+        printf('  !illegal command');
     }
   } while (!fin);
 }
@@ -2230,38 +2230,38 @@ void land() {
   bool found;
   Planet? pplanet;
 
-  printf("and tf:");
+  printf('and tf:');
   tfc = get_char();
   clear_left();
-  tfnum = ord(tfc) - ord("A") + 1;
+  tfnum = ord(tfc) - ord('A') + 1;
   if (tfnum < 1 || tfnum > 26) {
     error_message();
-    printf("  !illegal tf");
+    printf('  !illegal tf');
   } else if (tf[player][tfnum].dest == 0) {
     error_message();
-    printf("  !nonexistent tf");
+    printf('  !nonexistent tf');
   } else if (tf[player][tfnum].eta != 0) {
     error_message();
-    printf("  !tf is not in normal space  ");
+    printf('  !tf is not in normal space  ');
   } else {
     starnum = tf[player][tfnum].dest;
     pplanet = stars[starnum].first_planet;
     if (pplanet == null) {
       error_message();
-      printf("  !no planets at this star    ");
+      printf('  !no planets at this star    ');
     } else if (tf_stars[starnum][ENEMY] > 0) {
       error_message();
-      printf("  !enemy ships present");
+      printf('  !enemy ships present');
     } else {
       point(11, 18);
-      printf(" planet ");
+      printf(' planet ');
       if (pplanet.next == null) {
         planet_num = pplanet.number;
-        printf("%d", planet_num);
+        printf('%d', planet_num);
       } else {
-        printf(":");
+        printf(':');
         planc = get_char();
-        planet_num = ord(planc) - ord("0");
+        planet_num = ord(planc) - ord('0');
         found = false;
         while (pplanet != null && !found) {
           if (pplanet.number == planet_num) {
@@ -2273,17 +2273,17 @@ void land() {
         if (!found) {
           planet_num = 0;
           error_message();
-          printf(" !Not a habitable planet ");
+          printf(' !Not a habitable planet ');
         }
       }
       if (planet_num != 0 && pplanet != null) {
         if (pplanet.team == ENEMY || (pplanet.team == player && pplanet.conquered)) {
           error_message();
-          printf("  !Enemy infested planet  !!  ");
+          printf('  !Enemy infested planet  !!  ');
         } else {
           room_left = pplanet.capacity - pplanet.inhabitants;
           point(1, 19);
-          printf(" transports:");
+          printf(' transports:');
           iline = get_line(false);
           trc = get_token(iline);
           transports = iline.amount;
@@ -2292,13 +2292,13 @@ void land() {
           }
           if (transports < 1) {
             error_message();
-            printf("  !illegal transports");
+            printf('  !illegal transports');
           } else if (transports > tf[player][tfnum].t) {
             error_message();
-            printf("  !only %2d transports in tf", tf[player][tfnum].t);
+            printf('  !only %2d transports in tf', tf[player][tfnum].t);
           } else if (transports > room_left) {
             error_message();
-            printf("  !only room for %2d transports", room_left);
+            printf('  !only room for %2d transports', room_left);
           } else {
             pplanet.team = player;
             if (pplanet.inhabitants == 0) {
@@ -2309,12 +2309,12 @@ void land() {
             tf[player][tfnum].t = tf[player][tfnum].t - transports;
             x = tf[player][tfnum].x;
             y = tf[player][tfnum].y;
-            if (board[x][y].enemy == " ") {
-              board[x][y].enemy = "@";
+            if (board[x][y].enemy == ' ') {
+              board[x][y].enemy = '@';
               update_board(x, y, Sector.left);
             }
             point(1, 20);
-            putchar(chr(starnum + ord("A") - 1));
+            putchar(chr(starnum + ord('A') - 1));
             see = true;
             if ((y_cursor > 21 && x_cursor >= 50) || y_cursor > 24) {
               pause();
@@ -2334,9 +2334,9 @@ void land() {
 /// Asks the user whether he wants to quit the game.
 void quit() {
   clear_screen();
-  printf("Quit game....[Y/N]\n");
+  printf('Quit game....[Y/N]\n');
   final answer = get_char();
-  if (answer != "Y") {
+  if (answer != 'Y') {
     printmap();
   } else {
     game_over = true;
@@ -2348,24 +2348,24 @@ void send_tf() {
   String tf_move;
   int tf_num;
   bool error;
-  printf("estination tf:");
+  printf('estination tf:');
   tf_move = get_char();
   clear_left();
   point(1, 19);
-  tf_num = ord(tf_move) - ord("A") + 1;
+  tf_num = ord(tf_move) - ord('A') + 1;
   if (tf_num < 1 || tf_num > 26) {
     error_message();
-    printf(" !illegal tf");
+    printf(' !illegal tf');
   } else if (tf[player][tf_num].dest == 0) {
     error_message();
-    printf(" !nonexistent tf");
+    printf(' !nonexistent tf');
   } else if (tf[player][tf_num].eta != 0 &&
       (tf[player][tf_num].eta != tf[player][tf_num].origeta || tf[player][tf_num].withdrew)) {
     error_message();
-    printf(" !Tf is not in normal space");
+    printf(' !Tf is not in normal space');
   } else if (tf[player][tf_num].blasting) {
     error_message();
-    printf(" !Tf is blasting a planet");
+    printf(' !Tf is blasting a planet');
   } else {
     tf[player][tf_num].withdrew = false;
     set_des(tf_num);
@@ -2381,36 +2381,36 @@ bool set_des(int tf_num) {
   int from_star;
   if (tf[player][tf_num].eta != 0) {
     tf[player][tf_num].eta = 0;
-    from_star = ord(board[tf[player][tf_num].x][tf[player][tf_num].y].star) - ord("A") + 1;
+    from_star = ord(board[tf[player][tf_num].x][tf[player][tf_num].y].star) - ord('A') + 1;
     tf[player][tf_num].dest = from_star;
     tf_stars[from_star][player]++;
-    printf("(Cancelling previous orders)");
+    printf('(Cancelling previous orders)');
     point(1, y_cursor + 1);
   }
   error = true;
-  printf(" to star:");
+  printf(' to star:');
   point(10, y_cursor);
   istar = get_char();
-  st_num = ord(istar) - ord("A") + 1;
+  st_num = ord(istar) - ord('A') + 1;
   if ((st_num < 0) || (st_num > nstars)) {
     error_message();
-    printf("  !illegal star");
+    printf('  !illegal star');
   } else {
     r = sqrt(((stars[st_num].x - tf[1][tf_num].x) * (stars[st_num].x - tf[1][tf_num].x)) +
         ((stars[st_num].y - tf[1][tf_num].y) * (stars[st_num].y - tf[1][tf_num].y)));
     point(1, y_cursor + 1);
-    printf("   distance:%5.1f", r);
+    printf('   distance:%5.1f', r);
     dst = (r - 0.049).truncate() + 1;
     if ((dst > range[player]) && ((tf[1][tf_num].b != 0) || (tf[1][tf_num].c != 0) || (tf[1][tf_num].t != 0))) {
       error_message();
-      printf("  !maximum range is %2d", range[player]);
+      printf('  !maximum range is %2d', range[player]);
     } else if (r < 0.5) {
       point(1, y_cursor + 1);
-      printf("Tf remains at star");
+      printf('Tf remains at star');
     } else {
       min_eta = ((dst - 1) / vel[player]).truncate() + 1;
       point(1, y_cursor + 1);
-      printf("eta in %2d turns", min_eta);
+      printf('eta in %2d turns', min_eta);
       tf_stars[tf[player][tf_num].dest][player]--;
       tf[player][tf_num].dest = st_num;
       tf[player][tf_num].eta = min_eta;
@@ -2426,9 +2426,9 @@ bool set_des(int tf_num) {
 /// Returns the next character the user enters on the keyboard.
 /// Returns the empty string on EOF.
 String get_char() {
-  var result = getchar() ?? "";
-  if (result == "\r") {
-    result = "\n";
+  var result = getchar() ?? '';
+  if (result == '\r') {
+    result = '\n';
   }
   result = result.toUpperCase();
   putchar(result);
@@ -2436,7 +2436,7 @@ String get_char() {
 }
 
 class Line {
-  List<String> iline = List.filled(81, " ");
+  List<String> iline = List.filled(81, ' ');
   int index = 1;
   int amount = 0;
 }
@@ -2450,30 +2450,30 @@ Line get_line(bool onech) {
   ind = 1;
   do {
     ch = get_char();
-    if (ch == "\b") {
+    if (ch == '\b') {
       if (ind != 1) {
         ind = ind - 1;
         if ((ind != 1) && onech) {
-          putchar("\b");
+          putchar('\b');
           ind = ind - 1;
         }
         if ((ind != 1) && !onech) {
-          putchar(" ");
-          putchar("\b");
+          putchar(' ');
+          putchar('\b');
         }
       }
-    } else if (ch != "\n") {
+    } else if (ch != '\n') {
       line.iline[ind] = ch;
       ind = ind + 1;
       if (onech) {
-        putchar(" ");
-        line.iline[ind] = " ";
+        putchar(' ');
+        line.iline[ind] = ' ';
         ind = ind + 1;
       }
     }
-  } while (ind < 25 && ch != "\n");
+  } while (ind < 25 && ch != '\n');
   while (ind != 80) {
-    line.iline[ind] = " ";
+    line.iline[ind] = ' ';
     ind = ind + 1;
   }
   return line;
@@ -2502,7 +2502,7 @@ void clear_field() {
   if (new_bottom < bottom_field) {
     for (y = new_bottom + 1; y <= bottom_field; y++) {
       point(50, y);
-      printf("\x1B[K");
+      printf('\x1B[K');
     }
   }
   bottom_field = new_bottom;
@@ -2522,7 +2522,7 @@ void clear_left() {
 
 /// Clears the screen and moves the cursor to 1/1.
 void clear_screen() {
-  printf("\x1B[2J");
+  printf('\x1B[2J');
   point(1, 1);
 }
 
@@ -2539,10 +2539,10 @@ String get_token(Line line) {
 
   index = line.index;
   value = 0;
-  token = " ";
+  token = ' ';
 
   // skip whitespace
-  while (line.iline[index] == " " && index < 80) {
+  while (line.iline[index] == ' ' && index < 80) {
     index += 1;
   }
   if (index < 80) {
@@ -2550,7 +2550,7 @@ String get_token(Line line) {
       value = 1;
     } else {
       while (isdigit(line.iline[index])) {
-        value = 10 * value + ord(line.iline[index]) - ord("0");
+        value = 10 * value + ord(line.iline[index]) - ord('0');
         index = index + 1;
       }
     }
@@ -2559,10 +2559,10 @@ String get_token(Line line) {
   }
 
   // skip to the next word
-  while (line.iline[index] != " " && index < 80) {
+  while (line.iline[index] != ' ' && index < 80) {
     index += 1;
   }
-  while (line.iline[index] == " " && index < 80) {
+  while (line.iline[index] == ' ' && index < 80) {
     index = index + 1;
   }
 
@@ -2577,74 +2577,74 @@ class Helpst {
 }
 
 List<Helpst> help0 = [
-  Helpst("B", "Bld Battlestar(s)    75"),
-  Helpst("C", "Bld Cruiser(s)       16"),
-  Helpst("H", "Help"),
-  Helpst("R", "Range Research"),
-  Helpst("S", "Bld Scout(s)          6"),
-  Helpst("V", "Velocity Research"),
-  Helpst("W", "Weapons Research"),
-  Helpst(">M", "Redraw Map"),
-  Helpst(">R", "Research summary")
+  Helpst('B', 'Bld Battlestar(s)    75'),
+  Helpst('C', 'Bld Cruiser(s)       16'),
+  Helpst('H', 'Help'),
+  Helpst('R', 'Range Research'),
+  Helpst('S', 'Bld Scout(s)          6'),
+  Helpst('V', 'Velocity Research'),
+  Helpst('W', 'Weapons Research'),
+  Helpst('>M', 'Redraw Map'),
+  Helpst('>R', 'Research summary')
 ];
 
 List<Helpst> help1 = [
-  Helpst("B", "Blast Planet"),
-  Helpst("C", "Colony summary"),
-  Helpst("D", "TaskForce Destination"),
-  Helpst("G", "Go on (done)"),
-  Helpst("H", "Help"),
-  Helpst("J", "Join TaskForces"),
-  Helpst("L", "Land transports"),
-  Helpst("M", "Redraw Map"),
-  Helpst("N", "New TaskForce"),
-  Helpst("Q", "Quit"),
-  Helpst("R", "Research summary"),
-  Helpst("S", "Star summary"),
-  Helpst("T", "TaskForce summary")
+  Helpst('B', 'Blast Planet'),
+  Helpst('C', 'Colony summary'),
+  Helpst('D', 'TaskForce Destination'),
+  Helpst('G', 'Go on (done)'),
+  Helpst('H', 'Help'),
+  Helpst('J', 'Join TaskForces'),
+  Helpst('L', 'Land transports'),
+  Helpst('M', 'Redraw Map'),
+  Helpst('N', 'New TaskForce'),
+  Helpst('Q', 'Quit'),
+  Helpst('R', 'Research summary'),
+  Helpst('S', 'Star summary'),
+  Helpst('T', 'TaskForce summary')
 ];
 
 List<Helpst> help2 = [
-  Helpst("C", "Colonies"),
-  Helpst("G", "Go on (done)"),
-  Helpst("H", "Help"),
-  Helpst("M", "Map"),
-  Helpst("O", "Odds"),
-  Helpst("R", "Research summary"),
-  Helpst("S", "Star summary"),
-  Helpst("T", "TaskForce summary"),
-  Helpst("W", "Withdraw")
+  Helpst('C', 'Colonies'),
+  Helpst('G', 'Go on (done)'),
+  Helpst('H', 'Help'),
+  Helpst('M', 'Map'),
+  Helpst('O', 'Odds'),
+  Helpst('R', 'Research summary'),
+  Helpst('S', 'Star summary'),
+  Helpst('T', 'TaskForce summary'),
+  Helpst('W', 'Withdraw')
 ];
 
 List<Helpst> help3 = [
-  Helpst("B", "Break off Attack"),
-  Helpst("C", "Colony summary"),
-  Helpst("G", "Go on (done)"),
-  Helpst("H", "Help"),
-  Helpst("J", "Join TFs"),
-  Helpst("M", "Redraw Map"),
-  Helpst("N", "New TF"),
-  Helpst("R", "Research summary"),
-  Helpst("S", "Star summary"),
-  Helpst("T", "TaskForce summary")
+  Helpst('B', 'Break off Attack'),
+  Helpst('C', 'Colony summary'),
+  Helpst('G', 'Go on (done)'),
+  Helpst('H', 'Help'),
+  Helpst('J', 'Join TFs'),
+  Helpst('M', 'Redraw Map'),
+  Helpst('N', 'New TF'),
+  Helpst('R', 'Research summary'),
+  Helpst('S', 'Star summary'),
+  Helpst('T', 'TaskForce summary')
 ];
 
 List<Helpst> help4 = [
-  Helpst("A", "Bld Adv. Missle Base 35"),
-  Helpst("B", "Bld Battlestar(s)    70"),
-  Helpst("C", "Bld Cruiser(s)       16"),
-  Helpst("H", "Help"),
-  Helpst("I", "Invest                3"),
-  Helpst("M", "Bld Missle Base(s)    8"),
-  Helpst("R", "Range Research"),
-  Helpst("S", "Bld Scout(s)          6"),
-  Helpst("T", "Bld Transports"),
-  Helpst("V", "Vel Research"),
-  Helpst("W", "Weapons Research"),
-  Helpst(">C", "Colony summary"),
-  Helpst(">M", "Redraw Map"),
-  Helpst(">R", "Research summary"),
-  Helpst(">S", "Star summary")
+  Helpst('A', 'Bld Adv. Missle Base 35'),
+  Helpst('B', 'Bld Battlestar(s)    70'),
+  Helpst('C', 'Bld Cruiser(s)       16'),
+  Helpst('H', 'Help'),
+  Helpst('I', 'Invest                3'),
+  Helpst('M', 'Bld Missle Base(s)    8'),
+  Helpst('R', 'Range Research'),
+  Helpst('S', 'Bld Scout(s)          6'),
+  Helpst('T', 'Bld Transports'),
+  Helpst('V', 'Vel Research'),
+  Helpst('W', 'Weapons Research'),
+  Helpst('>C', 'Colony summary'),
+  Helpst('>M', 'Redraw Map'),
+  Helpst('>R', 'Research summary'),
+  Helpst('>S', 'Star summary')
 ];
 
 /// Prints a list of command in the last 30 columns of the screen.
@@ -2669,7 +2669,7 @@ void help(int which) {
   if (h != null) {
     point(50, j++);
     for (final hh in h) {
-      printf("%2s - %-25s", hh.cmd, hh.does);
+      printf('%2s - %-25s', hh.cmd, hh.does);
       point(50, j++);
     }
     clear_field();
@@ -2683,24 +2683,24 @@ void help(int which) {
 void on_board(int x, int y) {
   int i;
   int starnum;
-  board[x][y].tf = " ";
+  board[x][y].tf = ' ';
   i = 1;
   do {
     if ((tf[player][i].dest != 0) && (tf[player][i].x == x) && (tf[player][i].y == y)) {
-      if (board[x][y].tf == " ") {
-        board[x][y].tf = chr(i + ord("a") - 1);
+      if (board[x][y].tf == ' ') {
+        board[x][y].tf = chr(i + ord('a') - 1);
       } else {
-        board[x][y].tf = "*";
+        board[x][y].tf = '*';
         i = 27;
       }
     }
     i = i + 1;
   } while (i <= 26);
-  if (board[x][y].star != ".") {
-    board[x][y].enemy = " ";
-    starnum = ord(board[x][y].star) - ord("A") + 1;
+  if (board[x][y].star != '.') {
+    board[x][y].enemy = ' ';
+    starnum = ord(board[x][y].star) - ord('A') + 1;
     if (col_stars[starnum][player] != 0) {
-      board[x][y].enemy = "@";
+      board[x][y].enemy = '@';
     }
   }
   update_board(x, y, Sector.both);
@@ -2709,7 +2709,7 @@ void on_board(int x, int y) {
 /// Asks the user to press any key to continue.
 void pause() {
   point(1, 18);
-  printf("Press any key to continue  ");
+  printf('Press any key to continue  ');
   get_char();
 }
 
@@ -2719,21 +2719,21 @@ void print_tf(int i) {
   if (i > 0 && i < 27) {
     final t = tf[player][i];
     if (t.dest != 0) {
-      printf("TF%c:", chr(i + ord("a") - 1));
+      printf('TF%c:', chr(i + ord('a') - 1));
       if (t.eta == 0) {
-        putchar(chr(t.dest + ord("A") - 1));
+        putchar(chr(t.dest + ord('A') - 1));
       } else {
-        putchar(" ");
+        putchar(' ');
       }
-      printf("(%2d,%2d)               ", t.x, t.y);
+      printf('(%2d,%2d)               ', t.x, t.y);
       point(x_cursor + 14, y_cursor);
       x_cursor = x_cursor - 14;
       disp_tf(t);
       if (t.eta != 0) {
         // still on its way
-        printf("\x1B[7m");
-        printf("%c%d", chr(t.dest + ord("A") - 1), t.eta);
-        printf("\x1B[0m");
+        printf('\x1B[7m');
+        printf('%c%d', chr(t.dest + ord('A') - 1), t.eta);
+        printf('\x1B[0m');
       }
       point(x_cursor, y_cursor + 1);
     }
@@ -2753,7 +2753,7 @@ void print_star(int stnum) {
     }
     if (stars[stnum].visit[player] == true) {
       see = false;
-      printf("----- star %c -----            ", chr(stnum + ord("A") - 1));
+      printf('----- star %c -----            ', chr(stnum + ord('A') - 1));
       point(50, y_cursor + 1);
       x = stars[stnum].x;
       y = stars[stnum].y;
@@ -2761,7 +2761,7 @@ void print_star(int stnum) {
         see = true;
         for (i = 1; i <= 26; i++) {
           if (tf[player][i].dest == stnum && tf[player][i].eta == 0) {
-            printf("TF%c                           ", chr(i + ord("a") - 1));
+            printf('TF%c                           ', chr(i + ord('a') - 1));
             point(55, y_cursor);
             disp_tf(tf[player][i]);
             point(50, y_cursor + 1);
@@ -2776,18 +2776,18 @@ void print_star(int stnum) {
         while (tf[ENEMY][i].eta != 0 || (tf[ENEMY][i].dest != stnum)) {
           i = i + 1;
         }
-        printf(" EN:                          ");
+        printf(' EN:                          ');
         point(55, y_cursor);
         disp_tf(tf[ENEMY][i]);
         point(50, y_cursor + 1);
       }
       p = stars[stnum].first_planet;
       if (p == null) {
-        printf("  no useable planets          ");
+        printf('  no useable planets          ');
         point(50, y_cursor + 1);
       } else {
         while (p != null) {
-          putchar(" ");
+          putchar(' ');
           if (((y_cursor > 21) && (x_cursor >= 50)) || (y_cursor > 24)) {
             pause();
             clear_field();
@@ -2805,50 +2805,50 @@ void print_star(int stnum) {
 void ressum() {
   String key;
   Line iline;
-  printf("esearch field(s):");
+  printf('esearch field(s):');
   iline = get_line(true);
   key = get_token(iline);
   clear_left();
-  if (key == " ") {
-    pr2nt_res("R");
-    pr2nt_res("V");
-    pr2nt_res("W");
+  if (key == ' ') {
+    pr2nt_res('R');
+    pr2nt_res('V');
+    pr2nt_res('W');
   } else {
     do {
       pr2nt_res(key);
       key = get_token(iline);
-    } while (key != " ");
+    } while (key != ' ');
   }
 }
 
 /// Prints information about the given field of research.
 void pr2nt_res(String field) {
   switch (field) {
-    case "V":
+    case 'V':
       point(53, 18);
-      printf("V:%2d", vel[player]);
+      printf('V:%2d', vel[player]);
       if (vel[player] < max_vel) {
-        printf(" res: %3d need:%4d", vel_working[player], vel_req[vel[player] + 1]);
+        printf(' res: %3d need:%4d', vel_working[player], vel_req[vel[player] + 1]);
       } else {
-        printf("                   "); // 19 spaces
+        printf('                   '); // 19 spaces
       }
       break;
-    case "R":
+    case 'R':
       point(53, 19);
-      printf("R:%2d", range[player]);
+      printf('R:%2d', range[player]);
       if (range[player] < bdsize) {
-        printf(" res: %3d need:%4d", ran_working[player], ran_req[range[player] + 1]);
+        printf(' res: %3d need:%4d', ran_working[player], ran_req[range[player] + 1]);
       } else {
-        printf("                   "); // 19 spaces
+        printf('                   '); // 19 spaces
       }
       break;
-    case "W":
+    case 'W':
       point(53, 20);
-      printf("W:%2d", weapons[player]);
+      printf('W:%2d', weapons[player]);
       if (weapons[player] < 10) {
-        printf(" res: %3d need:%4d", weap_working[player], weap_req[weapons[player] + 1]);
+        printf(' res: %3d need:%4d', weap_working[player], weap_req[weapons[player] + 1]);
       } else {
-        printf("                   "); // 19 spaces
+        printf('                   '); // 19 spaces
       }
       break;
   }
@@ -2858,7 +2858,7 @@ void pr2nt_res(String field) {
 /// If the enemy is researching and a new level was reached, pick a new field.
 void research(int team, String field, int amt) {
   switch (field) {
-    case "W":
+    case 'W':
       if (weapons[team] < 10) {
         weap_working[team] += amt;
         amt = 0;
@@ -2874,7 +2874,7 @@ void research(int team, String field, int amt) {
         }
       }
       break;
-    case "R":
+    case 'R':
       if (range[team] < bdsize) {
         ran_working[team] += amt;
         amt = 0;
@@ -2890,7 +2890,7 @@ void research(int team, String field, int amt) {
         }
       }
       break;
-    case "V":
+    case 'V':
       if (vel[team] < max_vel) {
         vel_working[team] += amt;
         amt = 0;
@@ -2907,7 +2907,7 @@ void research(int team, String field, int amt) {
       }
       break;
     default:
-      printf("error!!!! in research field %c\n", field);
+      printf('error!!!! in research field %c\n', field);
   }
 }
 
@@ -2917,21 +2917,21 @@ void make_tf() {
   int tf_num;
   bool error;
   int new_tf;
-  printf("ew tf- from tf:");
+  printf('ew tf- from tf:');
   task = get_char();
   clear_left();
-  tf_num = ord(task) - ord("A") + 1;
+  tf_num = ord(task) - ord('A') + 1;
   error = (tf_num < 1) || (tf_num > 26);
   if (!error) {
     error = (tf[player][tf_num].eta != 0) || (tf[player][tf_num].dest == 0);
   }
   if (error) {
     error_message();
-    printf("  !illegal tf");
+    printf('  !illegal tf');
   } else if (tf[player][tf_num].blasting) {
     error = true;
     error_message();
-    printf(" !Tf is blasting a planet     ");
+    printf(' !Tf is blasting a planet     ');
   } else {
     point(1, 19);
     new_tf = split_tf(tf_num);
@@ -2949,12 +2949,12 @@ int split_tf(int tf_num) {
   Line iline;
   new_tf = get_tf(player, tf[player][tf_num].dest);
   tf_stars[tf[player][tf_num].dest][player]++;
-  printf(" ships:");
+  printf(' ships:');
   point(8, y_cursor);
   iline = get_line(false);
   ships = get_token(iline);
   n_ships = iline.amount;
-  if (ships == " ") {
+  if (ships == ' ') {
     tf[player][new_tf].s = tf[player][tf_num].s;
     tf[player][new_tf].t = tf[player][tf_num].t;
     tf[player][new_tf].c = tf[player][tf_num].c;
@@ -2966,28 +2966,28 @@ int split_tf(int tf_num) {
   } else {
     do {
       switch (ships) {
-        case "T":
+        case 'T':
           if (tf[player][tf_num].t < n_ships) {
             n_ships = tf[player][tf_num].t;
           }
           tf[player][tf_num].t = tf[player][tf_num].t - n_ships;
           tf[player][new_tf].t = tf[player][new_tf].t + n_ships;
           break;
-        case "S":
+        case 'S':
           if (tf[player][tf_num].s < n_ships) {
             n_ships = tf[player][tf_num].s;
           }
           tf[player][tf_num].s = tf[player][tf_num].s - n_ships;
           tf[player][new_tf].s = tf[player][new_tf].s + n_ships;
           break;
-        case "C":
+        case 'C':
           if (tf[player][tf_num].c < n_ships) {
             n_ships = tf[player][tf_num].c;
           }
           tf[player][tf_num].c = tf[player][tf_num].c - n_ships;
           tf[player][new_tf].c = tf[player][new_tf].c + n_ships;
           break;
-        case "B":
+        case 'B':
           if (tf[player][tf_num].b < n_ships) {
             n_ships = tf[player][tf_num].b;
           }
@@ -2996,11 +2996,11 @@ int split_tf(int tf_num) {
           break;
         default:
           error_message();
-          printf("  ! Illegal field %c", ships);
+          printf('  ! Illegal field %c', ships);
       }
       ships = get_token(iline);
       n_ships = iline.amount;
-    } while (ships != " ");
+    } while (ships != ' ');
   }
   x = tf[player][tf_num].x;
   y = tf[player][tf_num].y;
@@ -3015,45 +3015,45 @@ void join_tf() {
   String tf1, tf2;
   int tf1n, tf2n;
   Line iline;
-  printf("oin tfs:");
+  printf('oin tfs:');
   iline = get_line(true);
   clear_left();
   tf1 = get_token(iline);
-  tf1n = ord(tf1) - ord("A") + 1;
+  tf1n = ord(tf1) - ord('A') + 1;
   if ((tf1n < 1) || (tf1n > 26)) {
     error_message();
-    printf("  ! illegal tf %c", tf1);
+    printf('  ! illegal tf %c', tf1);
   } else if ((tf[player][tf1n].eta) > 0) {
     error_message();
-    printf("  !tf%c is not in normal space ", tf1);
+    printf('  !tf%c is not in normal space ', tf1);
   } else if (tf[player][tf1n].dest == 0) {
     error_message();
-    printf("  !nonexistent tf");
+    printf('  !nonexistent tf');
   } else if (tf[player][tf1n].blasting) {
     error_message();
-    printf("  !Tf is blasting a planet    ");
+    printf('  !Tf is blasting a planet    ');
   } else {
     tf2 = get_token(iline);
-    while (tf2 != " ") {
-      tf2n = ord(tf2) - ord("A") + 1;
+    while (tf2 != ' ') {
+      tf2n = ord(tf2) - ord('A') + 1;
       if (tf2n < 1 || tf2n > 26) {
         error_message();
-        printf("  !illegal tf %c", tf2);
+        printf('  !illegal tf %c', tf2);
       } else if (tf2n == tf1n) {
         error_message();
-        printf("!Duplicate tf %c", tf2);
+        printf('!Duplicate tf %c', tf2);
       } else if (tf[player][tf2n].dest == 0) {
         error_message();
-        printf("!Nonexistant TF%c", tf2);
+        printf('!Nonexistant TF%c', tf2);
       } else if ((tf[player][tf2n].x != tf[player][tf1n].x) || (tf[player][tf2n].y != tf[player][tf2n].y)) {
         error_message();
-        printf("  !tf%c bad location", tf2);
+        printf('  !tf%c bad location', tf2);
       } else if (tf[player][tf2n].eta != 0) {
         error_message();
-        printf("  !tf%c is not in normal space ", tf2);
+        printf('  !tf%c is not in normal space ', tf2);
       } else if (tf[player][tf2n].blasting) {
         error_message();
-        printf(" !Tf%c is blasting a planet    ", tf2);
+        printf(' !Tf%c is blasting a planet    ', tf2);
       } else {
         joinsilent(player, tf[player][tf1n], tf[player][tf2n]);
       }
@@ -3155,98 +3155,98 @@ void inv_player(int x, int y, Planet planet) {
   balance = planet.iu;
   clear_left();
   point(1, 19);
-  putchar(chr(planet.pstar + ord("A") - 1));
-  printf("%d:%2d                         ", planet.number, planet.psee_capacity);
+  putchar(chr(planet.pstar + ord('A') - 1));
+  printf('%d:%2d                         ', planet.number, planet.psee_capacity);
   point(x_cursor + 5, y_cursor);
   x_cursor = x_cursor - 5;
-  printf("(%2d,/%3d)", planet.inhabitants, planet.iu);
+  printf('(%2d,/%3d)', planet.inhabitants, planet.iu);
   if (planet.conquered) {
-    printf("Con");
+    printf('Con');
   } else {
-    printf("   ");
+    printf('   ');
   }
   if (planet.mb != 0) {
-    printf("%2dmb", planet.mb);
+    printf('%2dmb', planet.mb);
   } else {
-    printf("    ");
+    printf('    ');
   }
   if (planet.amb != 0) {
-    printf("%2damb", planet.amb);
+    printf('%2damb', planet.amb);
   }
   point(x_cursor, y_cursor + 1);
   do {
     point(1, 18);
-    printf("%3d?                          ", balance);
+    printf('%3d?                          ', balance);
     point(5, 18);
     iline = get_line(false);
     do {
       key = get_token(iline);
       amount = iline.amount;
       switch (key) {
-        case "A":
+        case 'A':
           cost = amount * amb_cost;
           if (planet.inhabitants == 0) {
             cost = 0;
             error_message();
-            printf("  !abandoned planet");
+            printf('  !abandoned planet');
           } else if (planet.conquered) {
             cost = 0;
             error_message();
-            printf(" !No amb  on conquered colony ");
+            printf(' !No amb  on conquered colony ');
           } else if (cost <= balance) {
             planet.amb = planet.amb + amount;
           }
           break;
-        case "B":
+        case 'B':
           cost = amount * b_cost;
           if (cost <= balance) {
             tf[player][new_tf].b = tf[player][new_tf].b + amount;
             printtf = true;
           }
           break;
-        case "C":
+        case 'C':
           cost = amount * c_cost;
           if (cost <= balance) {
             tf[player][new_tf].c = tf[player][new_tf].c + amount;
             printtf = true;
           }
           break;
-        case "H":
+        case 'H':
           help(4);
           cost = 0;
           break;
-        case "M":
+        case 'M':
           cost = amount * mb_cost;
           if (planet.inhabitants == 0) {
             cost = 0;
             error_message();
-            printf("  !abandoned planet");
+            printf('  !abandoned planet');
           } else if (planet.conquered) {
             cost = 0;
             error_message();
-            printf(" !No Mb  on conquered colony  ");
+            printf(' !No Mb  on conquered colony  ');
           } else if (cost <= balance) {
             planet.mb = planet.mb + amount;
           }
           break;
-        case "S":
+        case 'S':
           cost = amount * s_cost;
           if (cost <= balance) {
             tf[player][new_tf].s = tf[player][new_tf].s + amount;
             printtf = true;
           }
           break;
-        case "T":
+        case 'T':
           cost = amount;
           if (cost <= balance) {
             if (cost > planet.inhabitants) {
               error_message();
-              printf(" ! Not enough people for ( trans");
+              printf(' ! Not enough people for ( trans');
               cost = 0;
             } else if (planet.conquered) {
               cost = 0;
               error_message();
-              printf("!No transports on conqered col");
+              printf('!No transports on conqered col');
             } else {
               tf[player][new_tf].t = tf[player][new_tf].t + amount;
               planet.inhabitants = planet.inhabitants - amount;
@@ -3257,7 +3257,7 @@ void inv_player(int x, int y, Planet planet) {
               if (planet.inhabitants == 0) {
                 col_stars[planet.pstar][player]--;
                 if (col_stars[planet.pstar][player] == 0) {
-                  board[x][y].enemy = " ";
+                  board[x][y].enemy = ' ';
                   update_board(x, y, Sector.left);
                 }
                 planet.team = none;
@@ -3268,7 +3268,7 @@ void inv_player(int x, int y, Planet planet) {
             }
           }
           break;
-        case "I":
+        case 'I':
           cost = i_cost * amount;
           if ((amount + planet.iu) > (planet.inhabitants * iu_ratio)) {
             cost = 0;
@@ -3278,9 +3278,9 @@ void inv_player(int x, int y, Planet planet) {
             planet.iu = planet.iu + amount;
           }
           break;
-        case "R":
-        case "V":
-        case "W":
+        case 'R':
+        case 'V':
+        case 'W':
           cost = amount;
           if (cost <= balance) {
             point(1, 21);
@@ -3288,37 +3288,37 @@ void inv_player(int x, int y, Planet planet) {
           }
           pr2nt_res(key);
           break;
-        case " ":
+        case ' ':
           cost = 0;
           break;
-        case ">":
+        case '>':
           cost = 0;
           point(1, 18);
-          printf(">?     ");
+          printf('>?     ');
           point(3, 18);
           key = get_char();
           switch (key) {
-            case "M":
+            case 'M':
               printmap();
               break;
-            case "S":
+            case 'S':
               starsum();
               break;
-            case "C":
+            case 'C':
               print_col();
               break;
-            case "R":
+            case 'R':
               ressum();
               break;
             default:
               error_message();
-              printf(" !Only M,S,C,R allowed      ");
+              printf(' !Only M,S,C,R allowed      ');
           }
           break;
         default:
           cost = 0;
           error_message();
-          printf(" !Illegal field %c", key);
+          printf(' !Illegal field %c', key);
       }
       if (cost > balance) {
         error_message();
@@ -3326,26 +3326,26 @@ void inv_player(int x, int y, Planet planet) {
       } else {
         balance = balance - cost;
       }
-    } while (key != " ");
+    } while (key != ' ');
     clear_left();
     point(1, 19);
-    putchar(chr(planet.pstar + ord("A") - 1));
-    printf("%d:%2d                         ", planet.number, planet.psee_capacity);
+    putchar(chr(planet.pstar + ord('A') - 1));
+    printf('%d:%2d                         ', planet.number, planet.psee_capacity);
     point(x_cursor + 5, y_cursor);
     x_cursor = x_cursor - 5;
-    printf("(%2d,/%3d)", planet.inhabitants, planet.iu);
+    printf('(%2d,/%3d)', planet.inhabitants, planet.iu);
     if (planet.conquered) {
-      printf("Con");
+      printf('Con');
     } else {
-      printf("   ");
+      printf('   ');
     }
     if (planet.mb != 0) {
-      printf("%2dmb", planet.mb);
+      printf('%2dmb', planet.mb);
     } else {
-      printf("    ");
+      printf('    ');
     }
     if (planet.amb != 0) {
-      printf("%2damb", planet.amb);
+      printf('%2damb', planet.amb);
     }
     point(x_cursor, y_cursor + 1);
     if (printtf) {
@@ -3364,7 +3364,7 @@ void invest() {
   Planet? pplan;
   production_year = 0;
   point(33, 20);
-  printf("* investment *  ");
+  printf('* investment *  ');
   for (starnum = 1; starnum <= nstars; starnum++) {
     pplan = stars[starnum].first_planet;
     while (pplan != null) {
@@ -3393,7 +3393,7 @@ void invest() {
 void main() {
   setRawMode(true);
   try {
-    printf("\n *** CONQUEST *** \n");
+    printf('\n *** CONQUEST *** \n');
     initconst();
     initmach();
     do {
