@@ -3,7 +3,7 @@ Conquest
 
 Dart port of a very old game found on an Amiga Fish disk.
 
-To start (using Dart 2.18 or later):
+To start (using Dart 3.2 or later):
 
     dart run
 
